@@ -1,9 +1,10 @@
 package module1;
 
+/*
 public class ExampleAssignmentOperatorShortuct {
-	public class ExampleDate {
+	 // public class ExampleDate {
 		
-		int ia = 2; int ib =1;
+	//	int ia = 2; int ib =1;
 		ia += ib; // same as: ia = ia + ib;
 		ia -= ib; // same as: ia = ia - ib;
 		float d = 2.0f; float e = 1.5f;
@@ -22,3 +23,4 @@ public class ExampleAssignmentOperatorShortuct {
 		
 	}
 }
+*/

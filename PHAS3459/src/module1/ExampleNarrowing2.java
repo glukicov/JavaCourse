@@ -18,10 +18,9 @@ public class ExampleNarrowing2 {
 		long iz = 100L; // OK: be explicit that 100 is a long
 		// by adding L on the end
 		
-		
-		char SingleCharacter = ’b’;
+		//	char SingleCharacter = ’b’;
 		// This is not allowed:
-		char TwoCharacters = ’bc’;
+		//char TwoCharacters = ’bc’;
 		// A boolean variable can only be assigned a value of true or false:
 		boolean SystemIsOK = false;
 		boolean SystemIsBroken = true;
