@@ -1,3 +1,4 @@
+/*
 package module1;
 
 public class ExampleAssignmentOperatorShortuct {
@@ -22,3 +23,5 @@ public class ExampleAssignmentOperatorShortuct {
 		
 	}
 }
+
+*/

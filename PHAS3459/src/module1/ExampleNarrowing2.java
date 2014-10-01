@@ -1,5 +1,7 @@
 package module1;
 
+/*
+
 public class ExampleNarrowing2 {
 	public static void main(String[] args) {
 		
@@ -29,3 +31,5 @@ public class ExampleNarrowing2 {
 	}
 
 }
+
+*/
