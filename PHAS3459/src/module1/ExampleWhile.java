@@ -18,3 +18,13 @@ funValue = someFunction(x);
 
 
 */
+
+package module1;
+
+public class ExampleWhile {
+
+public static void main(String[] args) {
+	
+	}
+}
+

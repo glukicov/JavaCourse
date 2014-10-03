@@ -73,10 +73,14 @@ public class DataTypes {
 		
 		// Investigating casting:
 
-		double d_var=4.99;
-		System.out.println("d_var= "+d_var);
-		double d_var = (int);
-		
+		double double_var=4.99;  // Assigning a value of 4.99 to a double variable
+		System.out.println("double_var= "+double_var);
+		int int_var  = (int) double_var; // Casting a value of double_var into an integer variable int_var
+		System.out.println("int_var= "+int_var); // Creating integer variable using cast ignores all the values after the decimal point
+		System.out.println("Creating integer variable using cast ignores all the values after the decimal point");
+		int_var = (int)Math.round(double_var);  // If we want to get the NEAREST integer we should use: 
+		System.out.println("int_var= "+int_var); // Now the value of double variable is casted to int_var as integer approximated to the nearest whole number
+		System.out.println("Now the value of double variable is casted to int_var as integer approximated to the nearest whole number");		
 	}
 
 }
