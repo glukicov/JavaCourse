@@ -13,12 +13,12 @@ public class VectorMethods {
 		return Math.sqrt(x*x+y*y+z*z);		// Defining the return of the function magnitude in terms of x, y an z 								
 	}
 
-	public double dotProduct (double i, double j, double k, double l, double m, double n){
-		return i*l+j*m+k*n;
+	public double dotProduct (double x1, double x2, double x3, double y1, double y2, double y3){
+		return x1*y1+x2*y2+x3*y3;
 	}
-	public double angle (double i, double j, double k, double l, double m, double n){			//Creating angle function which uses the outputs of functions 
+	public double angle (double x1, double x2, double x3, double y1, double y2, double y3){			//Creating angle function which uses the outputs of functions 
 																									//dotProduct and magnitude
-		return Math.toDegrees(Math.acos((dotProduct(i,j,k,l,m,n)/(magnitude(i,j,k)*magnitude(l,m,n)))));
+		return Math.toDegrees(Math.acos((dotProduct(x1,x2,x3,y1,y2,y3)/(magnitude(x1,x2,x3)*magnitude(y1,y2,y3)))));
 	}
 
 
