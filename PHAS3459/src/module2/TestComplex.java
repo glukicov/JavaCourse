@@ -12,14 +12,20 @@ public class TestComplex {
 		System.out.println(c1);
 		System.out.println(c2);
 		System.out.println("c1xc2= "+Complex.multiply(c1, c2));
-		System.out.println("Leaving zero explcitly for real part");
+		System.out.println("Leaving zero explcitly for real part\n");
 		System.out.println("c1/c2= "+Complex.divide(c1, c2));
 		System.out.println("c1xI= "+Complex.multiply(c1, Complex.I));
 		System.out.println("c1/0= "+Complex.divide(c1, Complex.ZERO));
-		System.out.println("Division by zero gives Not a number answer: mathematically undefiend");
+		System.out.println("Division by zero gives Not a number answer: mathematically undefiend\n");
 		// This calls on a static method within a static method of Complex class
 		System.out.println("c1x(c2)*= "+Complex.multiply(c1, Complex.conjuagate(c2)));
-		System.out.println("c2x(c2)*= "+Complex.multiply(c2, Complex.conjuagate(c2)));
+		System.out.println("c2x(c2)*= "+Complex.multiply(c2, Complex.conjuagate(c2))+"\n");
+		
+		// Testing other methods:
+		System.out.println("Testing other methods:");
+		System.out.println("R(c2)= "+c2.real()+"\n");
+		System.out.println("Im(c1)= "+c1.imag()+"\n");
+		System.out.println("theta(c1)= "+c1.angle()+ "/rad");
 		
 	}
 

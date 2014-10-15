@@ -29,18 +29,9 @@ public class Complex {
 
 	// Returning angle in rad, taking care of the phasor direction
 	double angle(){
-		if(r>=0 && i>=0){
-			return Math.atan(i/r);
-		}
-		if(r<0 && i>0){
-			return Math.PI- Math.atan(i/r);
-		}
-		if(r<0 && i<0){
-			return Math.PI+ Math.atan(i/r);
-		}
-		else{
-			return Math.PI*2+ Math.atan(i/r);
-		}
+		//Math.atan2 The method Converts rectangular coordinates (x, y) 
+		//to polar coordinate (r, theta) and returns theta.
+				return Math.atan2(i,r);
 	}
 
 	static Complex conjuagate(Complex A){
