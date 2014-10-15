@@ -55,7 +55,7 @@ public class TestThreeVector {
 
 		// Testing the non-static version of angle  method:
 		System.out.println("v1xv2= "+v1.angle(v2));
-		
+
 		// Testing the static version of add  method:
 		System.out.println("v1+v2= "+v1.add(v2));
 		System.out.println("Same results as above!");

@@ -72,24 +72,24 @@ public class ThreeVector {
 	}
 
 	//Non static (require object) versions of above methods:
-	// We can even assign the same name to the non-static methods as static ones (overloading)
-	
+	// We can even assign the same name to the non-static methods as static ones ! (overloading)
+
 	double scalarProduct(ThreeVector B){
 		return ThreeVector.scalarProduct(this, B);
 	}
 
-	 ThreeVector vectorProduct(ThreeVector B){
+	ThreeVector vectorProduct(ThreeVector B){
 		return ThreeVector.vectorProduct(this, B);
 	}
 
-	 ThreeVector add(ThreeVector B){
-			return ThreeVector.add(this, B);
-		}
-	 
-	 double angle(ThreeVector B){
-			return angle(this, B);
-		}
+	ThreeVector add(ThreeVector B){
+		return ThreeVector.add(this, B);
+	}
 
-	 
-	 
+	double angle(ThreeVector B){
+		return angle(this, B);
+	}
+
+
+
 }
