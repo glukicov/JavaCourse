@@ -18,14 +18,28 @@ public class TestThreeVector {
 		//on respective v1, v2, v3 object
 		System.out.println("Working in Cartesian Coordinate System");
 		System.out.println("v1= "+v1);
-		System.out.println("Unit vector of v1= "+v1.unitVector()+"/n");
+		System.out.println("Unit vector of v1= "+v1.unitVector());
 		System.out.println("v2= "+v2);
-		System.out.println("Unit vector of v2= "+v2.unitVector()+"/n");
+		System.out.println("Unit vector of v2= "+v2.unitVector());
 		System.out.println("v3= "+v3);
-		System.out.println("Unit vector of v3= "+v3.unitVector()+"/n");
+		System.out.println("Unit vector of v3= "+v3.unitVector());
+		System.out.println("Unit vector of zero vector return Not a Number as expected: undefined input 0.0/0.0 (!)\n");
 		
-		//Printing dot product by calling dotProduct method on th
-		System.out.println("v1.v2= "+v3.unitVector()+"/n")
+		//Printing dot product by calling dotProduct method from ThreeVector class on the objects
+		System.out.println("v1.v2= "+ThreeVector.scalarProduct(v1,v2));
+		System.out.println("v1.v3= "+ThreeVector.scalarProduct(v1,v3));
+		System.out.println("v1xv2= "+ThreeVector.vectorProduct(v1,v2));
+		System.out.println("v1xv3= "+ThreeVector.vectorProduct(v1,v3)+ "\n");
+		
+		//Printing angles in radians
+		System.out.println("Angle between v1 and v2= "+ThreeVector.angle(v1,v2)+" /rad");
+		System.out.println("Angle between v1 and v3= "+ThreeVector.angle(v1,v3));
+		System.out.println("Angle between v1 and zero vector return Not a Number as expected...\n");
+		
+		// Leaving toString() method commented out:
+		System.out.println("When toString() method is commented out, any print out result that involves ");
+		System.out.println("an object has the following form: e.g. 'module2.ThreeVector@1461c98'. ");
+		System.out.println("This is a default method to display the object's class name representation, then '@' followed by its hashcode (numbers).");
 		
 	}
 }

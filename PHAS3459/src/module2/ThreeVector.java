@@ -6,28 +6,81 @@ package module2;
 
 public class ThreeVector {
 
-	//Initialising the variables (vector components) that only belong to this class
-	private double x1;
-	private double y1;
-	private double z1;
+	//Initialising the (instance) variables (vector components) that only belong to this class
+	private double x;
+	private double y;
+	private double z;
 
-	//Creating an empty constructor
+	//Creating an empty constructor is not necessary in our case!
 	//public ThreeVector(){}
 
 	//Constructor to define an object representing a three vector
-	public ThreeVector(double x1, double y1, double z1){
-		// Member variable initialisation
-		this.x1=x1;
-		this.y1=y1;
-		this.z1=z1;
+	public ThreeVector(double x, double y, double z){
+		//the instance variable x1 (on the left) of this object gets assigned the value 
+		//of the local variable x1(the one passed into the constructor)
+		this.x=x;   
+		this.y=y;
+		this.z=z;
 	}
 
-	public double dotProduct (double x1, double y1, double z1, double x2, double y2, double z2){
-		return x1*x2+y1*y2+z1*z2;
+	/* Methods that are declared as public can be accessed from outside this class
+	 static methods belongs to the class and not an instance of that class(object of the class)
+	 non-static methods require an object
+	 */
+
+	// Converting object (vector) to a string for print out
+	public  String toString() { 
+		return "(" +x+ "," +y+ "," +z+ ")";
+	}
+
+	// Defining the input of function magnitude with double as return type
+	double magnitude (){  
+		// Defining the return of the function 
+		return Math.sqrt(x*x+y*y+z*z);
+	}
+
+	//Creating a unit vector method
+	ThreeVector unitVector(){
+		double unit_x=x/magnitude();
+		double unit_y=y/magnitude();
+		double unit_z=z/magnitude();
+		return new ThreeVector(unit_x,unit_y,unit_z);
+	}
+
+	// Scalar Product between two vector objects(A, B)
+	static double scalarProduct (ThreeVector A, ThreeVector B){
+		return A.x*B.x+A.y*B.y+A.z*B.z;
+	}
+
+	// Vector Product methods with return type as ThreeVector object
+	static ThreeVector vectorProduct (ThreeVector A, ThreeVector B){
+		double i=(A.y*B.z)-(B.y*A.z);
+		double j=(A.z*B.x)-(B.z*A.x);
+		double k=(A.x*B.y)-(B.x*A.y);
+		return new ThreeVector(i,j,k);
+	}
+	//Adding two vectors
+	static ThreeVector add (ThreeVector A, ThreeVector B){
+		return new ThreeVector(A.x+B.x,A.y+B.y,A.z+B.z);
+	}
+
+	//Getting angle (in rad) between two vectors through scalar product
+	static double angle (ThreeVector A, ThreeVector B){
+		double scalar_product=scalarProduct(A,B);
+		double magnitude=A.magnitude()*B.magnitude();
+		return Math.acos(scalar_product/magnitude);
+	}
+
+	//Non static (require object) versions of above methods:
 	
-	public double magnitude (double x1, double y1, double z1){  // Defining function magnitude with double as return type and inputs as x, y and z
-		return Math.sqrt(dotProduct(x1,y1,z1,x1,y1,z1));		// Defining the return of the function magnitude in terms of x, y an z 	
+	// WHY??
+	
+
+//	double scalarProduct(ThreeVector)
+	{}
 
 
 
-	}
+
+
+}
