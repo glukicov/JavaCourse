@@ -1,7 +1,7 @@
 package module2;
 
 /*This class: 1)defines the data needed to stores a 3-vector object (Cartesian coordinates) 
- 				2) defines methods that can manipulate those vector objects 
+ 				2) defines methods that can manipulate those vector objects. 
  */
 
 public class ThreeVector {
