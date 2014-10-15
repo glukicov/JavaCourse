@@ -43,9 +43,9 @@ public class Complex {
 		}
 	}
 
-	Complex conjuagate(Complex A){
-		return new Complex(r, -i);
-
+	static Complex conjuagate(Complex A){
+		double n_i=-A.i;
+		return new Complex(A.r,n_i);
 	}
 
 	Complex normalised(Complex A){
@@ -70,7 +70,7 @@ public class Complex {
 			return r+" + "+i+"i";
 		}
 		else{
-			return r+" - "+i+"i";
+			return r+" - "+-i+"i";
 		}
 	}
 
@@ -96,15 +96,16 @@ public class Complex {
 
 	//static multiply method
 	static Complex multiply(Complex A, Complex B){
-		double s_r=A.r*B.r;
-		double s_i=A.i*B.i;
+		double s_r=A.r*B.r-A.i*B.i;
+		double s_i=A.r*B.i+A.i*B.r;
 		return new Complex(s_r, s_i);
 	}
 
 	//static divide method
 	static Complex divide(Complex A, Complex B){
-		double s_r=A.r/B.r;
-		double s_i=A.i/B.i;
+		double denominator = B.r*B.r +B.i*B.i;
+		double s_r = (A.r*B.r + A.i*B.i)/denominator;
+		double s_i = (B.r*A.i - A.r*B.i)/denominator;
 		return new Complex(s_r, s_i);
 	}
 
