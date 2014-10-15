@@ -5,6 +5,7 @@ package module2;
  * will initialise the new object.
  */
 public class TestThreeVector {
+	//Test
 
 	public static void main(String[] args) {
 		//Creating v1,v2,v3 objects by declaring that they belong to
