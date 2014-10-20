@@ -1,5 +1,7 @@
 package module3;
 
+// ***ADDED EXCEPTION HANDLING****
+
 public class Complex {
 
 	//Private instance variables: r=Real Part, i=Imag. part
@@ -31,7 +33,7 @@ public class Complex {
 	double angle(){
 		//Math.atan2 The method Converts rectangular coordinates (x, y) 
 		//to polar coordinate (r, theta) and returns theta.
-				return Math.atan2(i,r);
+		return Math.atan2(i,r);
 	}
 
 	static Complex conjuagate(Complex A){
@@ -39,7 +41,10 @@ public class Complex {
 		return new Complex(A.r,n_i);
 	}
 
-	Complex normalised(Complex A){
+	Complex normalised() throws Exception {
+		if (modulus()==0){
+			throw new Exception("Cannot normalise the complex number - division by zero(!)");		
+		}
 		double unit_r=r/modulus();
 		double unit_i=i/modulus();
 		return new Complex(unit_r, unit_i);
@@ -92,9 +97,13 @@ public class Complex {
 		return new Complex(s_r, s_i);
 	}
 
-	//static divide method
-	static Complex divide(Complex A, Complex B){
+	//static divide method + Exception handling 
+	static Complex divide(Complex A, Complex B) throws Exception {
 		double denominator = B.r*B.r +B.i*B.i;
+		if(denominator==0) {
+			throw new Exception("Cannot divide the two complex numbers - division by zero(!)");	
+		}
+
 		double s_r = (A.r*B.r + A.i*B.i)/denominator;
 		double s_i = (B.r*A.i - A.r*B.i)/denominator;
 		return new Complex(s_r, s_i);

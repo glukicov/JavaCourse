@@ -1,7 +1,9 @@
 package module3;
 
-/*This class: 1)defines the data needed to stores a 3-vector object (Cartesian coordinates) 
- 				2) defines methods that can manipulate those vector objects. 
+/*This class: 
+ * 						***ADDED EXCEPTION HANDLING****
+ * 1)defines the data needed to stores a 3-vector object (Cartesian coordinates) 
+ 				2) defines methods that can manipulate those vector objects.
  */
 
 public class ThreeVector {
@@ -30,7 +32,7 @@ public class ThreeVector {
 
 	// Converting object (vector) to a string for print out
 	public  String toString() { 
-		return "(" +x+ "," +y+ "," +z+ ")";
+		return "(" +x+ ", " +y+ ", " +z+ ")";
 	}
 
 	// Defining the input of function magnitude with double as return type
@@ -39,8 +41,11 @@ public class ThreeVector {
 		return Math.sqrt(x*x+y*y+z*z);
 	}
 
-	//Creating a unit vector method
-	ThreeVector unitVector(){
+	//Creating a unit vector method, WHCIH NOW HANDLES THE DIVISION BY ZERO CORRECTLY
+	ThreeVector unitVector() throws Exception{
+		if (magnitude()==0){
+			throw new Exception("Cannot define a unit vector for a zero vector(!)");	
+		}
 		double unit_x=x/magnitude();
 		double unit_y=y/magnitude();
 		double unit_z=z/magnitude();
@@ -65,7 +70,10 @@ public class ThreeVector {
 	}
 
 	//Getting angle (in rad) between two vectors through scalar product
-	static double angle (ThreeVector A, ThreeVector B){
+	static double angle (ThreeVector A, ThreeVector B) throws Exception{
+		if (A.magnitude()==0 || B.magnitude()==0){
+			throw new Exception("Cannot define an angle between a vector and a zero vector(!)");	
+		}
 		double scalar_product=scalarProduct(A,B);
 		double magnitude=A.magnitude()*B.magnitude();
 		return Math.acos(scalar_product/magnitude);
@@ -86,10 +94,8 @@ public class ThreeVector {
 		return ThreeVector.add(this, B);
 	}
 
-	double angle(ThreeVector B){
+	double angle(ThreeVector B) throws Exception{
 		return angle(this, B);
 	}
-
-
-
 }
+
