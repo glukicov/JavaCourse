@@ -16,6 +16,6 @@ public class ExampleKeyboardTest {
 		catch (java.io.IOException e) {
 			System.out.println("Problem: "+e.getMessage());
 		}
-		System.out.println("Thank you!");
+		System.out.println("Thank you!"); 
 	}
 }
