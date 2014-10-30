@@ -5,7 +5,7 @@ import java.io.*;
 public class ExampleFileWriter {
 	public static void main(String[] args) throws IOException {
 
-		String filename = "N:/Eclipse/workspace/test2.txt";
+		String filename = "C:/Users/G/Documents/PHYSICS/test2.txt";
 	
 			FileWriter f = new FileWriter(filename);
 			BufferedWriter b = new BufferedWriter(f);
