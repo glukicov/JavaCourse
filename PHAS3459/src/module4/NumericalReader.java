@@ -74,7 +74,7 @@ public class NumericalReader {
 	void analysisStart()throws IOException{
 		//Setting up method to write the results to a file
 		//Here we are using PrintWriter to wrap the FileWriter
-		String outputFilePath = "C:/Users/G/Documents/PHYSICS/numbers.txt";
+		String outputFilePath = "N:/Users/G/Documents/PHYSICS/numbers.txt";
 		fw = new FileWriter(outputFilePath);
 		BufferedWriter bw = new BufferedWriter(fw);
 		pw = new PrintWriter(bw);
