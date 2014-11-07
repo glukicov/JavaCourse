@@ -1,6 +1,6 @@
 package module5;
 
-public class DataPoints {
+public class DataPoint {
 
 	private double x;
 	private double y;
@@ -9,22 +9,23 @@ public class DataPoints {
 	//Data: http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-xy.txt
 
 	//Constructor for setting values
-	public DataPoints(double x, double y, double ey) {
+	public DataPoint(double x, double y, double ey) {
 		this.x = x; this.y = y; this.ey = ey;
 	}
 
 	//Getter methods
-	public double getx() {
+	public double getX() {
 		return this.x;
 	}
-	public double gety() {
+	public double getY() {
 		return this.y;
 	}
-	public double getey() {
+	public double getEY() {
 		return this.ey;
 	}
+	//Method to output values as a string
 	public String toString() {
-		return "(" + this.x + ", " + this.y + ", " + this.ey + ")";
+		return "("+this.x+", "+this.y+", "+this.ey+")";
 	}
 
 

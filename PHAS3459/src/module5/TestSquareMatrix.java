@@ -34,7 +34,7 @@ public class TestSquareMatrix {
 		System.out.println("[A,B]= "+(A.multiply(B)).subtract(B.multiply(A)));
 	
 		System.out.println("CxD= "+C.multiply(D));
-		System.out.println("Is CxD=I "+(C.multiply(D)).equals(SquareMatrix.unitMatrix(2)));
+		System.out.println("Is CxD = I ? :"+(C.multiply(D)).equals(SquareMatrix.unitMatrix(2)));
 	}
 	
 }
