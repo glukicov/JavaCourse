@@ -3,6 +3,9 @@ package module1;
 public class ExampleOperators {
 	public static void main(String[] args) {
 		
+double x= Double.parseDouble("10.1");
+System.out.println(x);
+		
 		/*
 		// int, long, float and double types support all the standard
 		// arithmetic operations.
@@ -27,7 +30,7 @@ public class ExampleOperators {
 		// <= : is less than or equal to
 		// > : is greater than
 		// >= : is greater than or equal to
-		boolean isSameAs=true;
+		/*boolean isSameAs=true;
 		int ia = 4; int ib = 4; int ic = 5;
 		//isSameAs = (ia != ib); // isSameAs = true;
 		System.out.println(isSameAs);
@@ -37,7 +40,7 @@ public class ExampleOperators {
 		
 		
 		// new changes  222
-		
+*/		
 	}
 
 }
