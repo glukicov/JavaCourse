@@ -43,12 +43,20 @@ public class TestExceptions {
 				System.out.println("TESTING ThreeVector: exception handling");
 				System.out.println("v1= "+v1);
 				System.out.println("v3= "+v3);
+				int a=0;
 				try{
+					a += 1000; 
 					System.out.println("Unit vector of v3= "+v3.unitVector());
+					a += 1000000;
 				}
 				catch (Exception e){
+					a += 4; 
 					System.out.println("Unit vector of v3= "+e);
 				}
+				finally { 
+					a += 8; 
+					} 
+				System.out.println(a);
 		
 				try{
 					System.out.println("Angle between v1 and v3= "+ThreeVector.angle(v1,v3));

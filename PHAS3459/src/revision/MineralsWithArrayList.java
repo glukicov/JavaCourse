@@ -89,7 +89,7 @@ public class MineralsWithArrayList {
 	 System.out.println("x"+x);
 	 int index2=locations.indexOf(x);
 	 System.out.println("index 2=" +index2);
-	 int index=Collections.binarySearch(locations, x);
+	// int index=Collections.binarySearch(locations, x);
 
 	   int liVal = -1;
 	   for(int i=0; i<locations.size();i++)
