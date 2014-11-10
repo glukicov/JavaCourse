@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class MineralsWithArrayList {
@@ -35,8 +36,25 @@ public class MineralsWithArrayList {
 			locations=locFromURL(locationURL);
 			samples=dataFromURL(sampleURL);
 			
-			Collections.sort(samples, new Samples.compare());	
+			//Collections.sort(samples);	
 	
+			
+			
+			
+			//This method works for sorting out array list for doubles (mass) 
+			Collections.sort(samples, new Comparator<Samples>() {
+			    @Override
+			    public int compare(Samples c1, Samples c2) {
+			        return Double.compare(c1.getMass(), c2.getMass());
+			    }
+			});
+			
+			
+			
+			
+			
+			
+			
 
 	}
 	catch (IOException e){
@@ -51,11 +69,70 @@ public class MineralsWithArrayList {
 	System.out.println("Samples after sorting: "+samples.toString()+"\n");
 	//System.out.println("Samples after sorting: "+samples+"\n");
 	
+	System.out.println("The length of array"+ samples.size());		
+	System.out.println("The lightest element:" +samples.get(0).getMass());	
+	Object lightest=samples.get(0);
+//	System.out.println("The lightest mass:"+lightest.);
 	
+	int maxID=samples.get(528).getCode();
+	int minID=samples.get(0).getCode();
+	
+	// /g, location="+locations.get(maxID)+"\n"
+	//  /g, location="+locations.get(minID)+"\n"
 
-//	System.out.println("Largest mass of a sample: ID= "+maxID+ ", mass= "+maxMass+ " /g, location="+locations.get(maxID)+"\n");
-//	System.out.println("Smallest mass of a sample: ID= "+minID+ ", mass= "+minMass+ " /g, location="+locations.get(minID)+"\n");
+	
+										//Implementing search though locations list array to find a specific location
+	
+	
+	
+	 int x = maxID;
+	 System.out.println("x"+x);
+	 int index2=locations.indexOf(x);
+	 System.out.println("index 2=" +index2);
+	 int index=Collections.binarySearch(locations, x);
 
+	   int liVal = -1;
+	   for(int i=0; i<locations.size();i++)
+	       if(x < locations.get(i).getCode()) // if we met a value > x
+	       {
+	          if(liVal==-1) // if we could not find any largest value smaller than x
+	              liVal = locations.get(i).getCode(); // return the value > x
+	          break;
+	       }
+	       else if(x > locations.get(i).getCode()) // find the largest value smaller than x, 
+	       {
+	           if(liVal < locations.get(i).getCode())
+	               liVal = locations.get(i).getCode();
+	       }
+
+	System.out.println(liVal);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	System.out.println("Largest mass of a sample: ID= "+samples.get(528).getCode()+ ", mass= "+samples.get(528).getMass());
+	System.out.println("Smallest mass of a sample: ID= "+samples.get(0).getCode()+ ", mass= "+samples.get(0).getMass());
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	int index = locations.indexOf(28);
+//	System.out.println("index="+index);
+	
 	//TO-DO later: Combining Hashmas into 1 with 3 objects is it possible
 	//or use other collection like:
 	/*		HashMap<Integer, Double, String>combined = new HashMap();
