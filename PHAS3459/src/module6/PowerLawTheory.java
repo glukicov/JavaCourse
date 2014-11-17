@@ -18,7 +18,7 @@ public class PowerLawTheory implements Theory {
 	
 	//Method to output values as a string
 		public String toString() {
-			return "y=x^ "+this.n+"";
+			return "y=x^"+this.n+"";
 		}
 }
 
