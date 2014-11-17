@@ -14,7 +14,7 @@ public class DataAnalysis {
 		
 	public static void main(String[] args) {
 		try{
-			ArrayList<DataPoint> raw_data = dataFromFile("C:/Users/G/Documents/PHYSICS/Year III/PHAS3440 Experimental Physics/Experiment/DATA/raw_data.data");
+			ArrayList<DataPoint> raw_data = dataFromFile("E:/Experiment/DATA/new data/raw_data2.data");
 			//System.out.println(raw_data);
 
 			// Removing events with t > 40000ns
@@ -31,7 +31,7 @@ public class DataAnalysis {
 			
 			try {
 				System.out.println("Starting task!");
-				File file = new File("C:/Users/G/Documents/PHYSICS/Year III/PHAS3440 Experimental Physics/Experiment/DATA/data.data");
+				File file = new File("E:/Experiment/DATA/new data/data.data");
 		 
 		         // if file doesnt exists, then create it
 		         if (!file.exists()) {
