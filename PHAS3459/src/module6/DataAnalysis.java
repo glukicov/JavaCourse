@@ -3,6 +3,13 @@ package module6;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/** A class performing a data analysis on fir of an experiental data
+ * Inherits from....Implements.... 
+ * @author Gleb
+ * @version 1.0 (17/11/14)
+ * 
+ * */
+
 public class DataAnalysis  {
 
 	// using url from the Test Data Points class:  dataURL="http://www.hep.ucl.ac.uk/undergrad/3459/data/module6/module6-data.txt";
@@ -40,10 +47,10 @@ public class DataAnalysis  {
 
 			// Explicitly printing out Chi2 and Reduced Chi2 values for each model
 			for (Theory th:theories){
-						System.out.println("Testing for theory: "+th);
-						double chi = ch.goodnessOfFit(data, th);
-						System.out.println("The value of chi^2=" +chi);
-						System.out.println("Reduced chi^2=" +chi/data.size()+"\n");
+				System.out.println("Testing for theory: "+th);
+				double chi = ch.goodnessOfFit(data, th);
+				System.out.println("The value of chi^2=" +chi);
+				System.out.println("Reduced chi^2=" +chi/data.size()+"\n");
 			}
 
 		}
@@ -54,7 +61,14 @@ public class DataAnalysis  {
 	}
 
 
-	//This methods compares the theories' fit, as a collection of objects in array list.
+	/** This methods compares the theories' fit, as a collection of objects in array list.
+	 * 
+	 * @param data
+	 * @param theories
+	 * @param gofCalculator
+	 * @return The best model that fits the data 
+	 * @
+	 */
 	private static Theory bestTheory(Collection<DataPoint> data, 
 			Collection<Theory> theories, GoodnessOfFitCalculator gofCalculator) {
 		boolean first = true;
