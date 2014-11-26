@@ -19,26 +19,39 @@ public class ThreadMain {
 		PrimeNumberTask pn = new PrimeNumberTask();
 		Thread counter = new Thread(ct);
 		Thread prime = new Thread(pn);
-		
-		//Starting the threads
-		try{
-			counter.start();
-			prime.start();
-		}
-		finally{
-			//Using an array property size to find the largest elements
-			// it works because we use a consecutive method to add elements to array
-			// so the last element is the largest!
-			int checkedSize=PrimeNumberTask.integers.size();
-			int primeSize=PrimeNumberTask.integers.size();
-			int largestInteger =PrimeNumberTask.integers.get(checkedSize);
-			int largestPrime = PrimeNumberTask.primes.get(primeSize);
 
-			//Printing out the results 
-			System.out.println("The largest integer that was checked: "+largestInteger);
-			System.out.println("The largest prime number found: "+largestPrime);
-			System.out.println("The total number of primes found: "+primeSize);
+		//Starting the threads
+
+		counter.start();
+		prime.start();
+		try{
+
+			counter.join();
+		} 
+		catch (InterruptedException e) 
+		{
+			counter.interrupt();
+			prime.interrupt();
 		}
-	}
+
+		// Stop prime thread
+		prime.interrupt();	
+
+	
+	
+		//Using an array property size to find the largest elements
+		// it works because we use a consecutive method to add elements to array
+		// so the last element is the largest!
+		int checkedSize=PrimeNumberTask.integers.size();
+		int primeSize=PrimeNumberTask.primes.size();
+		int largestInteger =PrimeNumberTask.integers.get(checkedSize);
+		int largestPrime = PrimeNumberTask.primes.get(primeSize);
+
+		//Printing out the results 
+		System.out.println("The largest integer that was checked: "+largestInteger);
+		System.out.println("The largest prime number found: "+largestPrime);
+		System.out.println("The total number of primes found: "+primeSize);
+	
+}
 
 }

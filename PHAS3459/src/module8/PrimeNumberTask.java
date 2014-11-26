@@ -14,42 +14,52 @@ public class PrimeNumberTask implements Runnable {
 	static ArrayList<Integer> primes = new ArrayList<Integer>();	
 	//Initialising the array to store integer numbers that have been checked
 	static ArrayList<Integer> integers = new ArrayList<Integer>();	
-
+	
+	
+	
 	//Testing number 
-	private int num = 2;
+	private int num = 2; // 1 is not prime
 
 	public void run() {
+		integers.add(1);
 		// run until interrupted
 		while (true) { 
 			if (Thread.currentThread().isInterrupted()) return;
 
-			 private static boolean isPrime(int num) {
-			        if (num % 2 == 0)
-			            return false;
-			        for (int i = 3; i * i <= num; i += 2)
-			            if (num % i == 0) return false;
-			        return true;
-			  } 
-
+			//Checking if the number is prime by a defined method below
+			if (isPrime(num)){
+				// Add to array of primes and checked
+				primes.add(num);
+				integers.add(num);
+				num += 1; 
+			}
+			else
+			{
+			integers.add(num);
+			num += 1; 
+			}
+			
 		}
 
 	}
 
-	// Defining a new if prime method 
-/*	private boolean ifPrime(int test) {
-
-		// For all previous primes
-		for (Integer i : primes) {
-			// Check if divisible
+	/**
+	 * This method is testing prime numbers
+	 * @param test (integer to be tested for being prime)
+	 * @return true is it is a prime
+	 */
+	private boolean isPrime(int test) {
+		//testing for all the integers checked so far
+		for (Integer i : integers) {
+			//if it is a multiple of that integer -> not prime
 			if (test % i == 0)
 				return false;
 		}
 		return true;
 
-	}*/
 
 
-
+	}
 
 }
 
