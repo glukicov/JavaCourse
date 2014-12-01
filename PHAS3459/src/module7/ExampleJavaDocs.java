@@ -18,6 +18,14 @@ public class ExampleJavaDocs {}
   * @return The best model that fits the data 
   * @
   */
+/**
+ @return is used to give the intent of the value returned by the function
 
-	
+@param gives the intent of any input parameter. The name of the param immediately follows @param.
 
+@exception is intended to say under what conditions an exception will be thrown. The @exception is followed by the exception name.
+
+@author gives the author of the code. 
+
+@version.
+ */

@@ -1,7 +1,6 @@
 package exam2_2013;
 
-/** A class that: 
- stores plant data in foramt...
+/** This class stores the data in appropriate format to be used by a collection object in Main
  * 
  * @author Gleb
  * @version 1.0 (17/11/14)

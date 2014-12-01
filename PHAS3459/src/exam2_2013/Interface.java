@@ -1,15 +1,17 @@
 package exam2_2013;
 
 /**
- * Defining an interface to be used by other classes (to link methods from classes)
+ * Defining an interface to be used by the main classes (to link non-static methods from Methods class)
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface Interface {
 	
 	/**
-     * Select N/S of Latitude
+     * See Methods.java for method definition
      */
     public ArrayList<DataFormat> SelectNorthOfLatitude(ArrayList<DataFormat> data, double latitude);
     
@@ -20,4 +22,19 @@ public interface Interface {
     public double Haversine(double x);
     
     public ArrayList<DataFormat> SelectDistance(ArrayList<DataFormat> data, double distance, double latitude, double longitude);
+
+    public ArrayList<DataFormat> readSurveyPlants(String url) throws IOException;
+    
+    public HashMap<String, String> readSpeciesPlants(String url) throws IOException;
+    
+    public String getTheKey(HashMap<String,String> map, String name);
+    
+    public double findMeanHeight(ArrayList<DataFormat> data);
+    
+    public String getTheValue(HashMap<String,String> map, String key);
+    
+    
+
+
+
 }
