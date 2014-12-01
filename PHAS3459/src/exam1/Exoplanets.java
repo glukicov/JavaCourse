@@ -36,7 +36,7 @@ public class Exoplanets {
 		//Initialising ArrayList
 		ArrayList<PlanetData> data = new ArrayList<PlanetData>();
 
-	
+
 		try{
 
 			//storing the planet data in the ArrayList
@@ -64,12 +64,12 @@ public class Exoplanets {
 			System.out.println("Tasks to analyse Exoplanets Data have been succesfully executed!");
 
 		}
-		
 
-	System.out.println("The planet closest to Earth is= "+data.get(0).getName()+ ", mass= "+data.get(0).getMass()+" year discovered= "+data.get(0).getYear());
-	
 
-		
+		System.out.println("The planet closest to Earth is= "+data.get(0).getName()+ ", mass= "+data.get(0).getMass()+" year discovered= "+data.get(0).getYear());
+
+
+
 	}
 
 
@@ -86,17 +86,19 @@ public class Exoplanets {
 		s.useDelimiter(",");
 
 		s.nextLine();
-
+		
 		s.useDelimiter(",");
-
+		
 		while(s.hasNextLine()) try{
 			double distance=0; //extending variable scope 
-
+			
 			String name = s.next();
 			Integer year = s.nextInt();
 			String method =s.next();
 			Double mass = s.nextDouble();
 			Double separation = s.nextDouble();
+		
+		
 			// IOException to handle if no distance is provided:
 			try{
 				distance = s.nextDouble();
@@ -106,16 +108,14 @@ public class Exoplanets {
 			{
 				break;	
 			}
-
+			System.out.println("distance=" +distance);
 			arrayList.add(new PlanetData(name, year, method, mass, separation, distance));
-			s.close();
-
 		}	
 		finally{
 		}
 
-
-		//s.close();
+		s.close();
+		
 		return arrayList;
 	}
 

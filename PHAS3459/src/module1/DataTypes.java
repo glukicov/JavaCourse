@@ -1,86 +1,82 @@
-/* This is Built-in Data Types and Operators assignment */
-
 package module1;
 
 public class DataTypes {
 
 	public static void main(String[] args) {
+		
+		// Assign the double variable doubVar the value 10
+		double doubVar = 10.0 ;
+		// Print the value of doubVar to the screen
+		// System.out.println(doubVar);
+		// Prefix the printing of the value with some descriptive information :
+		System.out.println("The value of doubVar is "+doubVar);
+		// Note the "" for any words
+		// The + means append to the output going to the screen
 
-		// Declaring and printing out variables: 
+		// Assign the float variable floatVar the value 10
+		float floatVar = 10.0f ;
+		// Print value of floatVar to the screen
+		System.out.println("The value of floatVar is "+floatVar);
 
-		double doubVar=10.0; // Declaring doubVar as double as assigning it value of 10.0
-		System.out.println("doubVar= "+doubVar);
+		// Assign the int variable intVar the value 10
+		int intVar = 10 ;
+		// Print value of intVar to the screen
+		System.out.println("The value of intVar is "+intVar);
 
-		float floatVar=10; 
-		System.out.println("floatVar= "+floatVar);
+		// Assign the long variable longVar the value 10
+		long longVar = 10 ;
+		// Print value of intVar to the screen
+		System.out.println("The value of longVar is "+longVar);
 
-		int intVar=10; 
-		System.out.println("intVar= "+intVar);
+		// Assign the byte variable byteVar the value 10
+		byte byteVar = 10 ;
+		// Print value of byteVar to the screen
+		System.out.println("The value of byteVar is "+byteVar);
+		System.out.println();
 
-		long longVar=10; 
-		System.out.println("longVar= "+longVar);
-
-		byte byteVar=10; 
-		System.out.println("byteVar= "+byteVar);
-
-
-		// Multiplying and printing out variables:
-
-		System.out.println("doubVar*doubVar= "+doubVar*doubVar);
-		System.out.println("floatVar*floatVar= "+floatVar*floatVar);
-		System.out.println("intVar*intVar= "+intVar*intVar);
-		System.out.println("longVar*longVar= "+longVar*longVar);
-		System.out.println("byteVar*longVar= "+byteVar*longVar);
+		// Multiply each value by itself and print the result
+		System.out.println("The value of doubVar squared is "+doubVar*doubVar);
+		System.out.println("The value of floatVar squared is "+floatVar*floatVar);
+		System.out.println("The value of intVar squared is "+intVar*intVar);
+		System.out.println("The value of longVar squared is "+longVar*longVar);
+		System.out.println("The value of byteVar squared is "+byteVar*byteVar);
+		System.out.println();
 
 
-		// Investigating mixing types in 3 Examples:
-		//Example 1 character:
+		// Investigate mixing types
+		// Add 10 to character variable charVar
+		char charVar = 'a'+10;
+		System.out.println("Adding 10 to letter a gives: "+charVar);
+		System.out.println("This is 10 further on from a in ASCII alphabet");
+		System.out.println();
 
-		char charVar='a';
-		System.out.println("charVar= " +charVar); //Prints out charVar single character variable
-		charVar='a'+10;
-		System.out.println("charVar= " +charVar);
-		System.out.println("As expected, CharVar remanined a singel character. "
-				+ "The action of addition of 10 moved a up the Java character set by 10 postions");
-		charVar='a'-4;
-		System.out.println("charVar= " +charVar);
-		System.out.println("CharVar now represents a bracket ']' ");
+		// Add 5.5 to character a
+		// char charVar2 = 'a'+5.5;
+		// System.out.println("Adding 5.5 to letter a gives: "+charVar2);
+		System.out.println("Adding 5.5 to character variable gives an error as can't convert from double to char");
+		System.out.println();
 
-		//Example 2 boolean:
+		// Remove 10 from character a
+		char charVar3 = 'a'-10;
+		System.out.println("Subtracting 10 from letter a gives: "+charVar3);
+		System.out.println("This is 10 back from a in ASCII alphabet");
+		System.out.println();
 
-		boolean cond=true;
-		System.out.println("cond = "+cond);
-		// cond= (byte) 0;
-		// Boolean cannot be assigned a byte value!
+		// Investigating uninitialised variable j 
+		int j = 1;
+		// int i; j = i+1;
+		System.out.println("The value of j is "+j);
+		System.out.println("Gives an error: local variable i not initialised i.e. not assigned value");
+		System.out.println();
 
-		// Example 3 integer:
-		int num=3;
-		double dob=2.0;
-		System.out.println("num= "+num);
-		System.out.println("dob= "+dob);
-		System.out.println("num*dob= "+num*dob); // Multiplying an integer by a double gives a double output
-
-		// Investigating uninitialised variable:
-
-		int j=1; // Declaring j as integer and setting initial value to 1
-		System.out.println("j= "+j);
-		int i;  /* Declaring i as integer WITHOUT setting initial value - this is useful for some memory conserving processes,
-				where value for i can be set later */
-
-		// System.out.println("i= "+i); - Cannot print i as i has no value (just the variable type)
-		//j=i+1; -Operation cannot be performed: i not have been initialised
-		//System.out.println("j= "+j);
-
-		// Investigating casting:
-
-		double double_var=4.99;  // Assigning a value of 4.99 to a double variable
-		System.out.println("double_var= "+double_var);
-		int int_var  = (int) double_var; // Casting a value of double_var into an integer variable int_var
-		System.out.println("int_var= "+int_var); // Creating integer variable using cast ignores all the values after the decimal point
-		System.out.println("Creating integer variable using cast ignores all the values after the decimal point");
-		int_var = (int)Math.round(double_var);  // If we want to get the NEAREST integer we should use: 
-		System.out.println("int_var= "+int_var); // Now the value of double variable is casted to int_var as integer approximated to the nearest whole number
-		System.out.println("Now the value of double variable is casted to int_var as integer approximated to the nearest whole number");		
+		// Investigating double to int cast
+		double castVar = 4.99 ;
+		// Cast double variable castVar to an int
+		System.out.println("The value of castVar is "+castVar);
+		System.out.println("The value of castVar cast to an int is "+(int)castVar);
+		System.out.println("Casting a double to an int only retains the integer part, so "+
+				castVar+" becomes "+(int)castVar);
+		
 	}
 
 }

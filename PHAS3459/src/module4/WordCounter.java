@@ -1,71 +1,73 @@
 package module4;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.*; // For BufferedReader, InputStreamReader, InputStream
+import java.net.*; // For URL
+import java.util.*; // For Scanner
 
 public class WordCounter {
-	
-	public static void main(String[] args){
 
-		try{
-			// Passing the value of url into a variable
-			String url=getStringFromKeyboard();
-			//Passing this variable into the method defined above
-			countWordsInResource(url);
-		}
-		catch (IOException e){
-			System.out.println("A error has occured: " +e.getMessage());
-		}
+	// Return keyboard input as string using BufferedReader
+	public static String getStringFromKeyboard() throws IOException {
 
-	}
+		// Instantiate BufferedReader object with keyboard input from InputStreamReader
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
 
-	//We will test a word counter on http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_text.txt
+		System.out.println("Please enter URL:");
+		// Convert single BufferedReader line to String
+		String keyString = br.readLine();
+		//System.out.println("Your URL is: "+keyString);
 
-	public static String getStringFromKeyboard() throws IOException{
-		//Creating object r, that reads bytes and decodes them into characters. by wrapping System.in
-		InputStreamReader r = new InputStreamReader(System.in);
-		//Wrapping r into a buffer (which is now an object called b)
-		BufferedReader b=new BufferedReader(r);
-		System.out.println("Please type the URL here: ");
-
-		// use the readLine method on the BufferedReader to read one line at a time.    
-		// the readLine method returns null when there is nothing else to read.
-		return b.readLine();
+		return keyString;
 
 	}
 
-	public static int countWordsInResource(String urlName) throws IOException{
+	public static int countWordsInResource(String webAddress) throws IOException {
 
-		//creating a new URL object
-		URL u=new URL(urlName);
+		// Initialise word count variable
+		int countWords = 0;
 
-		//Opening an input stream to read some number of bytes and wrapping it into a buffer
-		InputStream is=u.openStream();
+		// Instantiate URL object with web address
+		URL u = new URL(webAddress);
+
+		// Instantiate BufferedReader using URL stream
+		InputStream is = u.openStream();
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader b = new BufferedReader(isr);
 
-		// To look for words we will use Scanner, which is
-		// a simple text scanner which can parse primitive types and strings using regular expressions.
-		
+		// Instantiate Scanner for processing text data
 		Scanner s = new Scanner(b);
-		
-		// Here delimiter on the scanner is defined to look for words
-		s.useDelimiter("[ ,!?.]+");
 
-		int words=0; //Variable to store total number of words
-
-		//Here we will use our scanner
-
+		// Step through Scanner word by word
 		while (s.hasNext()) {
 			s.next();
-			words +=1;
+			countWords++;
 		}
-		//Closing the stream used by scanner
+
+		// Close Scanner (closes remaining objects)
 		s.close();
-		System.out.println("Total number of words="+words);
-		return words;
+
+		return countWords;
 
 	}
-	
+
+	public static void main(String[] args) {
+
+		try {
+			// Read URL String from keyboard input
+			// Use this URL: http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_text.txt
+			String keyString = WordCounter.getStringFromKeyboard();
+
+			// Count words in URL
+			int countWords = WordCounter.countWordsInResource(keyString);
+			System.out.println("Number of words in URL: "+countWords);
+		}
+		// Catch URL and InputStream Exceptions
+		catch (IOException e) {
+			System.out.println("Error in WordCounter: ");
+			e.printStackTrace();
+		}
+
+	}
+
 }

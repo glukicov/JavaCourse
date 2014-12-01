@@ -75,7 +75,7 @@ public class DataAnalysis {
 		Iterator<DataPoint> point = experiment.iterator();
 		while (point.hasNext()){
 			DataPoint scan = point.next();
-			chi+=Math.pow(scan.getY()-theory.y(scan.getX()),2)/Math.pow(scan.getEY(), 2);
+			chi+=Math.pow(scan.getY()-theory.y(scan.getX()),2)/Math.pow(scan.getEy(), 2);
 		}
 		return chi;
 	}

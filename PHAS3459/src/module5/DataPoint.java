@@ -1,35 +1,30 @@
 package module5;
 
+// Represents data point with x and y values, and error on y.
 public class DataPoint {
+    private double x;
+    private double y;
+    private double ey;
 
-	private double x;
-	private double y;
-	private double ey;
+    // Construct data point: (x, y +- ey)
+    public DataPoint(double x, double y, double ey) {
+        this.x = x;
+        this.y = y;
+        this.ey = ey;
+    }
 
-	//Data: http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-xy.txt
+    // Returns x value of point
+    public double getX() {
+        return x;
+    }
 
-	//Constructor for setting values
-	public DataPoint(double x, double y, double ey) {
-		this.x = x; this.y = y; this.ey = ey;
-	}
+    // Returns y value of point
+    public double getY() {
+        return y;
+    }
 
-	//Getter methods
-	public double getX() {
-		return this.x;
-	}
-	public double getY() {
-		return this.y;
-	}
-	public double getEY() {
-		return this.ey;
-	}
-	//Method to output values as a string
-	public String toString() {
-		return "("+this.x+", "+this.y+", "+this.ey+")";
-	}
-
-
-
+    // Returns error on y
+    public double getEy() {
+        return ey;
+    }
 }
-
-

@@ -1,70 +1,88 @@
-/* This is Function/Methods assignment. This script: 1) Calculates the magnitude of a vector with components x, y, z (as defined in the script)
-2) Calculates the dotProduct of two vectors with components a1, a2, a3 and b1, b2, b3
-3) Calculates the angle between two vectors with components a1, a2, a3 and b1, b2, b3
-4) Investigates what happends when angle between a vector and 0 vector are calculated
- */
 package module1;
 
 public class VectorMethods {
 
-	public VectorMethods(){}						// Creating an empty constructor 
+	// VectorMethods class constructor
+	public VectorMethods() { }
 
-	public double magnitude (double x1, double y1, double z1){  // Defining function magnitude with double as return type and inputs as x, y and z
-		return Math.sqrt(dotProduct(x1,y1,z1,x1,y1,z1));		// Defining the return of the function magnitude in terms of x, y an z 								
-	}
+	// Dot product of 2 vectors = x1*x2 + y1*y2 + z1*z2
+	public double dotProduct (double x1, double y1, double z1, double x2, double y2, double z2) {
 
-	public double dotProduct (double x1, double y1, double z1, double x2, double y2, double z2){
-		return x1*x2+y1*y2+z1*z2;
-	}
-	public double angle (double x1, double y1, double z1, double x2, double y2, double z2){			//Creating angle function which uses the outputs of functions 
-																									//dotProduct and magnitude
-		return Math.toDegrees(Math.acos((dotProduct(x1,y1,z1,x2,y2,z2)/(magnitude(x1,y1,z1)*magnitude(x2,y2,z2)))));
-	}
-
-
-	public static void main(String[] args) {
-		VectorMethods vm = new VectorMethods(); // Creating vm object of VectorMethods class 
+		double dotout = x1*x2 + y1*y2 + z1*z2;
+		System.out.println("The dot product of vectors ("+x1+", "+y1+", "+z1+") and "+
+				"("+x2+", "+y2+", "+z2+") is "+dotout);
+		return dotout;
 	
-		double a1=6; 
-		double a2=5; 
-		double a3=1;
-		double b1=2; 
-		double b2=4; 
-		double b3=3;
+	}
 
+	// Magnitude of vector = sqrt(x^2 + y^2 + z^2)
+	public double magnitude (double x, double y, double z) {
 
-		double scalarProduct=vm.dotProduct(a1,a2,a3,b1,b2,b3);
-		System.out.println("Scalar product of two vectors= "+scalarProduct+ " (With components: a1= "+a1+ " a2= "+a2+ " a3= "+a3+ " and " 
-				+ "b1= " +b1+ " b2= "+b2+ " b3= "+b3+ ")");
-		System.out.println(""); // Empty print out statement to improve to readability on console output
+		double mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+		System.out.println("The magnitude of vector ("+x+", "+y+", "+z+") is "+mag);
+		return mag;
+	
+	}
 
-		double mag = vm.magnitude(a1,a2,a3); // Creating a double variable magnitude which calls the function "magnitude" and returns the magnitude
-										// of a vector with components as variables a1, a2 and a3
-		System.out.println("Vector Magnitude= "+mag+ " (With components: a1= "+a1+ " a2= "+a2+ " a3= "+a3+ " )");
-		System.out.println("");
-		double theta=vm.angle(a1,a2,a3,b1,b2,b3);  //Passing on the values a1, a2...as defined above to the angle function
-		System.out.println("The angle between two vectors= "+theta+ " (degrees) (With components: a1= "+a1+ " a2= "+a2+ " a3= "+a3+ " and " 
-				+ "b1= " +b1+ " b2= "+b2+ " b3= "+b3+ ")");
-		System.out.println("The result is as expected: a number in degrees which indicates the angle between the two vectors");
-		System.out.println("");
-		double c1=0;
-		double c2=0;
-		double c3=0;		
-		
-		double theta2=vm.angle(a1,a2,a3,c1,c2,c3);  //Now calcualting the scalar product with 0 vector..
-		System.out.println("The angle between two vectors= "+theta2+ " (With components: a1= "+a1+ " a2= "+a2+ " a3= "+a3+ " and " 
-				+ "c1= " +c1+ " c2= "+c2+ " c3= "+c3+ ")");
-		System.out.println("The result is NOT as expected: scalar prodcut with zero vector gives NaN (Not a number) output, because of the  divison by 0.0 which is arithmetically undefined (!):");
-		double mag2 = vm.magnitude(c1,c2,c3); // Creating a double variable magnitude which calls the function "magnitude" and returns the magnitude
-		System.out.println("Magnitude of 'zero' vector ="+mag2);
-		double scalarProduct2=vm.dotProduct(a1,a2,a3,c1,c2,c3);
-		System.out.println("Dot product with 'zero' vector ="+scalarProduct2);
-		System.out.println("And the input of the angle fucntions takes the following undefined input 0.0/0.0 (!)");
-		double theta3=Math.toDegrees(Math.acos(0.0/0.0));
-		System.out.println("The output= "+theta3);
-		System.out.println("However, IF the INTEGER was used for components of vector (int), then the devison woud look like 0/0 - whcih is NOT allowed (different than NaN) (!)");
-		// double theta4=Math.toDegrees(Math.acos(0/0)); The integer input, however triggers the explicit division by zero error (!)
-		
-		}
+	// Angle between 2 vectors = acos((a.b)/(|a|*|b|))
+	public double angle (double x1, double y1, double z1, double x2, double y2, double z2) {
+
+		// Calculate magnitude of each vector
+		double mag1 = this.magnitude(x1, y1, z1);
+		double mag2 = this.magnitude(x2, y2, z2);
+
+		// Calculate dot product between vectors
+		double dotprod = this.dotProduct(x1,  y1, z1, x2, y2, z2);
+
+		//Calculate angle from dot product and magnitudes
+		double angout = Math.acos(dotprod/(mag1*mag2));
+
+		System.out.println("The angle between vectors ("+x1+", "+y1+", "+z1+") and "+
+				"("+x2+", "+y2+", "+z2+") is "+angout+" radians");
+		System.out.println("The angle between vectors ("+x1+", "+y1+", "+z1+") and "+
+				"("+x2+", "+y2+", "+z2+") is "+Math.toDegrees(angout)+" degrees");
+
+		// Return angle in radians
+		return angout;
+	
+	}
+
+	// Suppress "unused" warnings coming from output variables of angle method
+	@SuppressWarnings("unused")
+	public static void main(String[] args) {
+
+		// Instantiate VectorMethods object vm
+		VectorMethods vm = new VectorMethods();
+
+		// Define values for vector 1
+		double x1 = 6;
+		double y1 = 5;
+		double z1 = 1;
+
+		//Define values for vector 2
+		double x2 = 2;
+		double y2 = 4;
+		double z2 = 3;
+
+		// Calculate angle between vectors 1 and 2
+		double angle = vm.angle(x1, y1, z1, x2, y2, z2);
+		System.out.println();
+
+		// Define values for vector 3
+		double x3 = 1;
+		double y3 = 4;
+		double z3 = 1;
+
+		//Define values for vector 2
+		double x4 = 0;
+		double y4 = 0;
+		double z4 = 0;
+
+		// Calculate angle between vectors 3 and 4
+		double angle2 = vm.angle(x3, y3, z3, x4, y4, z4);
+		System.out.println("Returns several NaN's as magnitude of second vector is zero, "+
+				"hence dot product is zero, giving 0/0 in angle calculation");
+
+	}
 
 }

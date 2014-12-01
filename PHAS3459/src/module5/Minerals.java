@@ -9,84 +9,87 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Minerals {
+    private static final String urlLocations =
+            "http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-locations.txt";
+    private static final String urlSamples =
+            "http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-samples.txt";
 
-	public static void main(String[] args) {
+    // Find lightest and heaviest samples.
+    public static void main(String[] args) {        
+        try {
+            HashMap<Integer, String> locations = readLocations(urlLocations);
+            HashMap<Integer, Double> masses = readMasses(urlSamples);
+            printMinMax(masses, locations);
+        } catch (IOException e) {
+            System.out.println("Error in Minerals: "+e.getMessage());
+        }
+    }
 
-		//Data(code, mass): 
-		String sampleURL=("http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-samples.txt");
-		// Location(location (word), code):
-		String locationURL=("http://www.hep.ucl.ac.uk/undergrad/3459/data/module5/module5-locations.txt");
+    // Print details of lightest and heaviest samples.
+    private static void printMinMax(HashMap<Integer, Double> masses,
+            HashMap<Integer, String> locations) {
+            double massMin = 0.0;
+            double massMax = 0.0;
+            int sampleMin = 0;
+            int sampleMax = 0;
+            boolean first = true;
+            for (int sample : masses.keySet()) {
+                double mass = masses.get(sample);
+                if (first || mass < massMin) {
+                    massMin = mass;
+                    sampleMin = sample;
+                }
+                if (first || mass > massMax) {
+                    massMax = mass;
+                    sampleMax = sample;
+                }
+                first = false;
 
-		//Initialising variables:
-		double minMass=Double.MAX_VALUE;
-		double maxMass=Double.MIN_VALUE;
-		int minID=0;
-		int maxID=0;
+            }
+            System.out.println("Largest mass:");
+            System.out.println("  sample   "+sampleMax);
+            System.out.println("  mass [g] "+massMax);
+            System.out.println("  location "+locations.get(sampleMax));
+            System.out.println("Smallest mass:");
+            System.out.println("  sample   "+sampleMin);
+            System.out.println("  mass [g] "+massMin);
+            System.out.println("  location "+locations.get(sampleMin));
+    }
 
-		//Initialising Hashmaps
-		HashMap<Integer, String> locations = new HashMap<Integer, String>();
-		HashMap<Integer, Double> samples = new HashMap<Integer, Double>();
+    // Get map from sample IDs to locations.
+    private static HashMap<Integer, String> readLocations(String url) throws IOException {
+        URL u = new URL(url);
+        InputStream is = u.openStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        HashMap<Integer, String> locations = new HashMap<Integer, String>();
+        String line;
+        while ((line = br.readLine()) != null) {
+            Scanner scanner = new Scanner(line);
+            String location = scanner.next();
+            int sample = scanner.nextInt();
+            locations.put(sample, location);
+            scanner.close();
+        }
+        return locations;
+    }
 
-
-		try{
-			//Analysing though samples
-			BufferedReader brSample=brFromURL(sampleURL);
-			Scanner scannerSample = new Scanner(brSample);
-			while(scannerSample.hasNext()){
-				int id = scannerSample.nextInt();
-				double mass=scannerSample.nextDouble(); 
-				samples.put(id,mass);
-				// Data comparison: 
-				if (mass < minMass) {
-					minMass = mass;
-					minID = id;
-				}
-				if (mass > maxMass) {
-					maxMass = mass;
-					maxID = id;
-				}
-			}
-		scannerSample.close();
-
-		//Analysing though locations
-		BufferedReader brLoc=brFromURL(locationURL);
-		Scanner scannerLoc = new Scanner(brLoc);
-
-		//Data handling description using regular expressions
-		while(scannerLoc.hasNext()){
-			String location =scannerLoc.next("[a-zA-Z]*") ;
-			locations.put(scannerLoc.nextInt(),location);
-
-		}
-		scannerLoc.close();
-	}
-	catch (IOException e){
-		System.out.println("An error has occured: " +e.getMessage());
-	}
-
-	System.out.println("Samples: "+samples+"\n");
-	System.out.println("Locations: "+locations+"\n");
-
-	System.out.println("Largest mass of a sample: ID= "+maxID+ ", mass= "+maxMass+ " /g, location="+locations.get(maxID)+"\n");
-	System.out.println("Smallest mass of a sample: ID= "+minID+ ", mass= "+minMass+ " /g, location="+locations.get(minID)+"\n");
-
-	//TO-DO later: Combining Hashmas into 1 with 3 objects is it possible
-	//or use other collection like:
-	/*		HashMap<Integer, Double, String>combined = new HashMap();
-		combined.putAll(samples);
-		combined.putAll(locations)
-	 */
-
-}
-
-//Reusing buffered reader from module 4
-static BufferedReader brFromURL(String someURL) throws IOException{
-	URL u=new URL(someURL);
-	//Opening an input stream to read some number of bytes and wrapping it into a buffer
-	InputStream is=u.openStream();
-	InputStreamReader isr = new InputStreamReader(is);
-	return new BufferedReader(isr);
-}
-
+    // Return map from sample IDs to masses.
+    private static HashMap<Integer, Double> readMasses(String url) throws IOException {
+        URL u = new URL(url);
+        InputStream is = u.openStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        HashMap<Integer, Double> masses = new HashMap<Integer, Double>();
+        String line;
+        while ((line = br.readLine()) != null) {
+            Scanner scanner = new Scanner(line);
+            int sample = scanner.nextInt();
+            double mass = scanner.nextDouble();
+            masses.put(sample, mass);
+            scanner.close();
+        }
+        return masses;
+    }
 
 }

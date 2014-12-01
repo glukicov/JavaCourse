@@ -1,86 +1,125 @@
 package module3;
 
-// ***ADDED EXCEPTION HANDLING****// 
-
 public class FallingParticle {
 
-	// Defining m=mass (kg), d=drag coefficient (kg/m), t=time(s), z=vertical position (m)
-	// v=velocity in upwards direction (m/s), g=9.81 m/s^2 (acceleration due to gravity)
-	//private static final encapsulation protects variables from being accidently changed
-	//from outside the class
-	private double m; //m is particle dependent 
+	// Initialise variables
+	// Private to avoid direct variable modification other than with appropriate methods
+	private double m = 0;	// Particle mass (kg)
+	private double d = 0;	// Drag coefficient (kg/m)
+	private double z = 0;	// Particle height (m)
+	private double t = 0;	// Simulation time (s)
+	private double v = 0;	// Particle velocity (m/s) - positive is upwards
+	private double height = 0;	// Initial simulation height (m)
 
-	private double d; //drag is fluid dependent
+	// Gravity variable
+	public static final double g = 9.80665;
 
-	private double z; //starting position to be specified 
-
-	private double t=0; //start time is taken as origin
-
-	private double v=0; //start from rest
-
-	private static double g=9.80665; //at UK's latitude
-
-	// Constructor with exception handler than can handle a special case of BOTH varialbes being in the un-allowed range(!)
-	public FallingParticle(double m, double d) throws Exception{
-		if ((m<=0) && (d<0)){
-			throw new Exception("Mass is less than or equal to zero AND drag is less than zero!");		
+	// Class constructors
+	public FallingParticle() {}
+	
+	public FallingParticle(double mass, double drag) throws Exception {
+		// Throw Exceptions for negative mass or drag
+		if (mass <= 0) {
+			throw new Exception("Mass must be greater than zero.");
+		} else if (drag < 0) {
+			throw new Exception("Cannot specify a negative drag coefficient.");
 		}
-		if (m<=0){
-			throw new Exception("Mass of the particle is less than or equal to zero!");		
-		}
-		if (d<0){
-			throw new Exception("Drag is less than zero!");		
-		}
-
-		this.m=m;
-		this.d=d;
-
+		this.m = mass;
+		this.d = drag;
+		this.v = 0;
+		this.t = 0;
 	}
-	// Set method with no return
-	void setZ(double z) throws Exception {
-		this.z = z;
-		if (z<0){
-			throw new Exception("Starting position cannot be less than zero!");	
+
+	// Set initial particle height 
+	void setZ(double height) throws Exception {
+		if ( height <= 0 ) {
+			throw new Exception("Drop height must be greater than zero.");
 		}
+		this.height = height;
 	}
-	// v can be zero, positive=moving up, or negative=moving down;
-	void setV(double v) { 
-		this.v = v;
-	}
-	//Get method with return
+
+	// Return particle position
 	double getZ() {
 		return this.z;
 	}
+
+	// Set particle velocity
+	void setV(double velocity) {
+		this.v = velocity;
+	}
+
+	// Return particle velocity
 	double getV() {
 		return this.v;
 	}
+
+	// Return current time
 	double getT() {
 		return this.t;
 	}
 
-	//creating a no return method to calculate acceleration, and update velocity
-	void doTimeStep(double dt){
-		double a=((d*v*v/m)-g);
-		t = t + dt;
-		v = v + a*dt;
-		z = z + v*dt;
+	// Calculate single time step
+	private void doTimeStep(double deltaT) throws Exception {
 
-	}
-
-	// no return method to simulate the descent of the particle
-	void drop(double dT) {
-		this.t = 0;
-		while (z > 0) {
-			doTimeStep(dT);
+		// Throw Exception for negative timestep
+		if ( deltaT <= 0 ) {
+			throw new Exception("Timestep must be greater than zero.");
 		}
+
+		// Initialise necessary variables
+		double deltaV = 0;
+		double deltaZ = 0;
+		double accel = 0;
+		double drag = this.d;
+
+		// Change sign of drag deceleration if particle moving upward
+		if ( getV() > 0 ) {
+			drag = -this.d;
+		}
+
+		// Calculate particle acceleration
+		accel = ((this.v*this.v*drag)/this.m) - FallingParticle.g;
+
+		// Update particle velocity from acceleration
+		deltaV = accel*deltaT;
+		this.v += deltaV;
+
+		// Update particle position from velocity
+		deltaZ = this.v*deltaT;
+		this.z += deltaZ;
+
+		// Update particle time
+		this.t += deltaT;
+		
 	}
 
+	// Drop method to calculate descent of particle
+	void drop(double deltaT) throws Exception {
 
+		// Throw Exception if drop height <= 0
+		if ( this.height <= 0 ) {
+			throw new Exception("Drop height must be greater than zero.");
+		}
 
+		// Set initial parameters at start of drop
+		this.z = this.height;
+		this.t = 0;
+		setV(0);
 
+		// Loop over timesteps till particle reaches z = 0;
+		try {
+			while ( this.z > 0){
+				doTimeStep(deltaT);
+			}
+		}
+		catch (Exception e) {
+			throw e;
+		}
 
+		// Display final particle data
+		System.out.println("Time step: "+deltaT+" s; Final position: "+getZ()+" m");
+		System.out.println("Final time = "+getT()+" s; Final velocity = "+getV()+" m/s");
+		System.out.println();
 
-
-
-
+	}
 }

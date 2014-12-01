@@ -1,82 +1,123 @@
-/* This is Algorithm control assignment */
-
-
 package module1;
 
 public class AlgorithmControl {
 
-	public AlgorithmControl(){}						// Creating an empty constructor 
+	// AlgorithmControl class constructor
+	public AlgorithmControl() { }
 
-	public static void loop() { //Creating a void method loop() as defined below:
+	// Count up in integer steps using for loop
+	public void loop(int startVal, int endVal) {
+
 		int i;
-		int f=20;
-		for (i=1; i<=f; i++){   // Creating a for loop with logical condition i<=f
-			System.out.println("i= "+i); //Whcih prints an incriment of x until x reaches 20
+		System.out.println("Counting up from "+startVal+" to "+endVal+" in integer steps:");
+
+		for ( i = startVal ; i <= endVal ; i++) {
+			// Print out iterator at each step
+			System.out.println("Iterator i = "+i);
 		}
+		System.out.println();
+		
 	}
 
-	public static void decrement(){ //Creating a void method decrement() as defined below:
-		int x=5;
-		while (x>-11){  // Creating a while loop which prints value of x until x reaches -11
-			System.out.println("x= "+x); // For last print out x is still -10
-			x--;  
-		}			
-	}
+	// Count down in integer steps using while loop
+	public void decrement(double startVal, double minVal) {
 
-	public static void increment(){ //Creating a void method increment to print out values from
-		// 2.4 to 14.9 in steps of 0.5
-		double inc_val;
-		double finish=14.9;
-		double step=0.5;
-		for(inc_val=2.4; inc_val<=finish; inc_val=inc_val+step){
-			System.out.println("inc_val= "+inc_val);
+		double i = startVal;
+		System.out.println("Counting down from "+startVal+" to "+minVal+" in integer steps:");
+
+		// Loop till iterator <= minVal
+		while ( i >= minVal) {
+			// Print out iterator at each step
+			System.out.println("Iterator i = "+i);
+			i-- ;			 
 		}
+		System.out.println();
 
 	}
 
-	public static int timer(long maxTime, int loopSteps){  
-		int counter=0;
-		int remainder;
-		long finish_time=System.currentTimeMillis()+maxTime*1000;  //Max time in seconds * 1000 = XXXX ms
+	// Count up in arbitrary steps using while loop
+	public void increment(double startVal, double maxVal, double incVal) {
 
-		while (System.currentTimeMillis()<=finish_time){  // The logical condition is to run for 4000 ms
+		double i = startVal;
+		System.out.println("Counting up from "+startVal+" to "+maxVal+" in steps of "+incVal+":");
 
-			counter++;										// Every time a while loop is executed counter is incremented by 1
-			remainder=counter % loopSteps;						
-			if (remainder == 0) {							// When the remainder is 0 - it is the 100th loop!
-				System.out.println("Number of loops run so far= "+counter);  // Prints after every 100 loops
-			}
+		// Loop till maxVal reached or exceeded
+		while ( i <= maxVal ) {
+			// Print out iterator at each step
+			 System.out.println("Iterator i = "+i);
+			 i += incVal;			 
 		}
-		System.out.println(""); // Empty print out statement to improve to readability on console output
-		System.out.println("The toal Number of loops run= "+counter);
-		System.out.println("");
-		System.out.println("For big time period of while loop (e.g. maxTime= 4000 ms) and loopSteps=100 Number of loops run so far = Total number of loops (multiple of 100)...(interesting)");
-		System.out.println("However, for small time period (e.g. 2 ms) it as expected, NOT necessarily equal. This is due to the println statement embedded into the while-if loop..");
-		System.out.println("When we change the loopSteps=50000, the println statement appears 500 less often on the screen and slow down the while loop execution less significantly,");
-		System.out.println("as a result, the total number of loops executed increased by a factor of ~20 (e.g. from 16702600 to 303290839, respectively)");
-		return counter;
+		System.out.println();
 
 	}
 
+	// Timer, displaying number of iterations every N steps 
+	public int timer(long maxTime, int loopSteps) {
+
+		// Get current system time in milliseconds
+		long timeStart = System.currentTimeMillis();
+		long timeNow = System.currentTimeMillis();
+		long timeDiff = 0;
+		int loopNum = 0 ;
+		System.out.println("Running timer for "+maxTime+"ms, displaying number of completed loops every "+
+				loopSteps+" steps");
+		System.out.println();
+
+		// Run while loop for maxTime milliseconds
+		while ( timeDiff < maxTime) {
+			timeNow = System.currentTimeMillis();
+			timeDiff = timeNow - timeStart ;
+			loopNum++ ;
+
+			// Calculate whether to display loop number using remainder
+			int iremainder = loopNum % loopSteps ;
+			if (iremainder == 0) {
+				//System.out.println("  Iteration = "+loopNum);
+				System.out.println("  Iteration = "+loopNum+"; time since start = "+timeDiff+"ms");
+				/** System.out.println("  Iteration = "+loopNum+"; current time = "+timeNow+
+						"; time since start = "+timeDiff+"ms"); */
+			} 
+		}
+		// Display summary data
+		System.out.println();
+		System.out.println("Ran timer for "+maxTime+"ms, displaying number of completed loops every "+
+				loopSteps+" steps");
+		System.out.println("Total duration of timer: "+timeDiff+"ms");
+		System.out.println("Total number of iterations: "+loopNum);
+		System.out.println();
+
+		return loopNum;
+
+	}
 
 	public static void main(String[] args) {
 
-		loop(); //Calling on the loop method
+		// Instantiate AlgorithmControl object alg
+		AlgorithmControl alg = new AlgorithmControl();
 
-		System.out.println(""); // Empty print out statement to improve to readability on console output
+		// Run loop method from 1 to 20 
+		alg.loop(1, 20);
 
-		decrement();  //Calling on the decrement method
+		// Run decrement method from 5 to -10
+		alg.decrement(5, -10);
 
-		System.out.println("");
+		// Run increment method from 2.4 to 14.9 in steps of 0.5
+		alg.increment(2.4, 14.9, 0.5);
 
-		increment(); //Calling on the increment method
+		// Run timer method for 5s printing every 100 steps
+		int loopNum100 = alg.timer(5000, 100) ;
 
-		System.out.println("");
-		// timer();  When amount of time was hard-coded no method arguments were necessary
+		// Run timer method for 5s printing every 50,000 steps
+		int loopNum50000 = alg.timer(5000, 50000) ;
 
-		// timer(4, 100); (e.g The total Number of loops run= 16702600)
+		System.out.println(loopNum100+" loops completed for timer displaying every 100 iterations.");
+		System.out.println(loopNum50000+" loops completed for timer displaying every 50,000 iterations.");
+		System.out.println();
+		System.out.println("Number of loops completed for timer displaying every "+
+				"50,000 iterations is much higher than for 100 iterations");
+		System.out.println("This is because displaying text to the screen takes CPU resources,");
+		System.out.println("delaying the timer each time a call to System.out.println is made.");
 
-		timer(4, 50000); // (e.g. The total Number of loops run= 303290839) 
 	}
-}
 
+}

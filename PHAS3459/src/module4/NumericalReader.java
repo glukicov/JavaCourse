@@ -1,147 +1,211 @@
 package module4;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.*;			// For BufferedReader, InputStreamReader, InputStream, FileReader 
+import java.net.URL;		// For URL
+import java.util.Scanner;	// For Scanner
 
 public class NumericalReader {
 
-	//Initialising the variables
-	private double minValue;
-	private double maxValue;
-	private double nValues;
-	private double sumOfValues;
+	// Private variables to keep track of values read in
+	private double maxValue, minValue, sumOfValues, meanValue;
+	private int nValues;
+	private String fileName;
 
-	//Explicitly declaring pw (and fw) variable so it can be used
-	//by different methods: Class Level Scope
-	private PrintWriter pw;
-	private FileWriter  fw;
+	// Return BufferedReader from URL
+	public static BufferedReader brFromURL(String urlName) throws IOException {
 
-	public static void main(String[] args){
+		// Create InputStream from URL object
+		URL u = new URL(urlName);
+		InputStream is = u.openStream();
 
-		// Constructor to create the new instance (object) of this class
-		NumericalReader nr=new NumericalReader();
-		try{
-			/*+++++++ Chose ONE (!) of the following inputs by 'uncommenting' +++++++*/	
-			BufferedReader br = brFromURL("http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data1.txt");
-			/* OR */
-			//BufferedReader br = brFromURL("http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data2.txt");
-			/* OR */
-			//BufferedReader br = brFromFile("C:/Users/G/Documents/PHYSICS/test3.txt");
-			/*+++++++ End of input choise +++++++ */
-
-			nr.analysisStart(); // initialising values
-
-			String line; //Creating an empty string;
-
-
-			while ((line = br.readLine()) != null) { 
-				try{
-					nr.analyseData(line); // analyse each line and check for comments
-				}
-				catch (IOException e){
-					System.out.println("An error has occured: " +e.getMessage());
-				}
-			}
-
-			nr.analysisEnd(); // print out the results
-
-		}
-		catch (IOException e){
-			System.out.println("An error has occured: " +e.getMessage());
-		}
-	}
-
-
-	/* Methods defining I/O */
-
-	static BufferedReader brFromURL(String someURL) throws IOException{
-		URL u=new URL(someURL);
-		//Opening an input stream to read some number of bytes and wrapping it into a buffer
-		InputStream is=u.openStream();
+		// Create BufferedReader from InputStreamReader object 
 		InputStreamReader isr = new InputStreamReader(is);
-		return new BufferedReader(isr);
+		BufferedReader br = new BufferedReader(isr);
+		return br;
+
 	}
 
-	static BufferedReader brFromFile(String fileName) throws IOException{
+	// Return BufferedReader from filename
+	public static BufferedReader brFile(String fileName) throws IOException {
+
+		// Instantiate FileReader object from filename
 		FileReader fr = new FileReader(fileName);
-		return new BufferedReader(fr);
-	}
 
-
-	/* Methods defining Data Analysis */
-
-	void analysisStart()throws IOException{
-		//Setting up method to write the results to a file
-		//Here we are using PrintWriter to wrap the FileWriter
-		String outputFilePath = "N:/Users/G/Documents/PHYSICS/numbers.txt";
-		fw = new FileWriter(outputFilePath);
-		BufferedWriter bw = new BufferedWriter(fw);
-		pw = new PrintWriter(bw);
-		minValue=Double.MAX_VALUE; // otherwise it will always stay zero...
+		// Return BufferedReader object from FileReader
+		BufferedReader br = new BufferedReader(fr);
+		return br;
 
 	}
-	void analyseData(String s)throws IOException{
-		//Setting up methods to analyse each line of the input file
-		Scanner scanner = new Scanner(s);
 
-		//Definition of data handling
-		try{
-			//Checking for empty lines
-			if(!s.isEmpty() && s != null){
-				// Trimming whitespace
-				if(!Character.isDigit(s.charAt(0))){
-					s.trim();
+	// Start number analysis: create file and initialise variables
+	// Note that this is a more complex version of analysisStart 
+	// than the one that is asked for so that more than one file
+	// can be created.
+	private void analysisStart(String dataFile) throws IOException {
+
+		// Find user home directory
+		String userHome = System.getProperty("user.home");
+
+		// Store data file in user home directory
+		this.fileName = (userHome + File.separator + dataFile);
+
+		// Create file
+		System.out.println("Creating file " + this.fileName);
+		System.out.println();
+		FileWriter f = new FileWriter(this.fileName);
+		BufferedWriter b = new BufferedWriter(f);
+		b.close();
+
+		// Initialise variables
+		this.maxValue = 0;
+		this.minValue = 0;
+		this.nValues = 0;
+		this.sumOfValues = 0;
+		this.meanValue = 0;
+
+	}
+
+	// Version of analysisStart to use default filename
+	private void analysisStart() throws IOException {
+		this.analysisStart("numbers.txt");
+	}
+
+	// Analyse data for each line
+	private void analyseData(String lineIn) throws Exception {
+
+		// Check if line actually has any data in it
+		if ( lineIn.isEmpty() ) {
+			return;
+		}
+		// Check if line starts with a letter and is commented out
+		else if ( Character.isLetter( lineIn.charAt(0) ) ) {
+			return;
+		}
+		else {
+
+			// Instantiate Scanner with line data String
+			Scanner s = new Scanner(lineIn);
+
+			// Step through numbers in line
+			while (s.hasNextDouble() ) {
+
+				// Read out next number
+				double curValue = s.nextDouble();
+
+				// If no values read, initialise minValue and maxValue
+				if (this.nValues == 0) {
+					this.maxValue = curValue;
+					this.minValue = curValue;
 				}
-				// Determines whether the specified char value is a digit
-				if(Character.isDigit(s.charAt(0))){
 
-					while(scanner.hasNextDouble()){
-						//Summing total number of numbers
-						nValues++;
-						String str = scanner.next();
+				// Update running total for nValues, sumOfValues
+				this.nValues ++;
+				this.sumOfValues += curValue;
 
-						//Sum of all numbers
-						sumOfValues +=  Double.parseDouble(str);
-						//Printing numbers to the file
-						pw.println((double) Double.parseDouble(str));
-						//Printing numbers to the screen
-						System.out.println(Double.parseDouble(str));
-				
-						//Comparing each scanned digit with local variables
-						if(Double.parseDouble(str) < minValue) {
-							minValue = Double.parseDouble(str);
-						}
-
-						if(Double.parseDouble(str) > maxValue) {
-							maxValue = Double.parseDouble(str);
-						}
-					}
+				// Only update maxValue if curValue is bigger than previous maxValue
+				if (curValue > this.maxValue) {
+					this.maxValue = curValue;
 				}
+
+				// Only update minValue if curValue is smaller than previous minValue
+				if (curValue < this.minValue) {
+					this.minValue = curValue;
+				}
+
+				// Display value on screen
+				System.out.println(curValue);
+
+				// Instantiate FileWriter, BufferedWriter and PrintWriter objects for writing data to file
+				FileWriter f = new FileWriter(this.fileName, true);
+				BufferedWriter b = new BufferedWriter(f);
+				PrintWriter pw = new PrintWriter(b);
+
+				// Write number to file
+				pw.println(curValue);
+				pw.close();
+
 			}
-			//Explicitly closing the scanner
-			scanner.close();
-		}
-		catch (Exception e){
-			System.out.println("An error has occured: " +e.getMessage());
+			
+			// Close Scanner
+			s.close();
+
 		}
 	}
 
+	// Display final values
+	private void analysisEnd() {
 
-	void analysisEnd()throws IOException{
-		//Printing the final results to the screen
-		final double average = sumOfValues/nValues;
-		System.out.println("The minimum value= "+minValue);
-		System.out.println("The maximum value= "+maxValue);
-		System.out.format("The average value=%10.4f%n",average);
-		System.out.println("The total number of values= "+nValues);
+		this.meanValue = this.sumOfValues/this.nValues;
+		System.out.println();
+		System.out.println("Final data values:");
+		System.out.println("Maximum Value: "+this.maxValue);
+		System.out.println("Minimum Value: "+this.minValue);
+		System.out.println("Number of Values: "+this.nValues);
+		System.out.println("Mean Value: "+this.meanValue);
+		System.out.println("Sum of all Values: "+this.sumOfValues);
+		System.out.println();
 
-		//If we also wanted to printing the final results to the file (outputFilePath)
-		//pw.println("The minimum value= "+minValue);
-		//etc..
-		//and we would close PrintWriter HERE to force the flushing of a an unfilled Buffer
-		//and print results to the file
-		pw.close();
-	}	
+	}
+
+	public static void main(String[] args) {
+
+		// Insantiate NumericalReader object for file
+		// http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data1.txt
+		NumericalReader nr = new NumericalReader();
+		try {
+			nr.analysisStart(); // initialize minValue etc.
+			BufferedReader reader = brFromURL("http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data1.txt");
+			String line = "";
+			System.out.println("Reading data values:");
+			while ((line = reader.readLine()) != null) {
+				nr.analyseData(line); // analyze lines, check for comments etc.
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Error in NumericalReader: ");
+			e.printStackTrace();
+		}
+
+		nr.analysisEnd(); // print min, max, etc.
+
+		// Insantiate second NumericalReader object for file
+		// http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data2.txt
+		NumericalReader nr2 = new NumericalReader();
+		try {
+			nr2.analysisStart("numbers2.txt"); // initialize minValue etc.
+			BufferedReader reader = brFromURL("http://www.hep.ucl.ac.uk/undergrad/3459/data/module4/module4_data2.txt");
+			String line = "";
+			System.out.println("Reading data values:");
+			while ((line = reader.readLine()) != null) {
+				nr2.analyseData(line); // analyze lines, check for comments etc.
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Error in NumericalReader: ");
+			e.printStackTrace();
+		}
+
+		nr2.analysisEnd(); // print min, max, etc.
+
+		// Insantiate third NumericalReader object for file
+		// http://www.hep.ucl.ac.uk/undergrad/3459/data-extra/module4/module4_data3.txt
+		NumericalReader nr3 = new NumericalReader();
+		try {
+			nr3.analysisStart("numbers3.txt"); // initialize minValue etc.
+			BufferedReader reader = brFromURL("http://www.hep.ucl.ac.uk/undergrad/3459/data-extra/module4/module4_data3.txt");
+			String line = "";
+			System.out.println("Reading data values:");
+			while ((line = reader.readLine()) != null) {
+				nr3.analyseData(line); // analyze lines, check for comments etc.
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Error in NumericalReader: ");
+			e.printStackTrace();
+		}
+
+		nr3.analysisEnd(); // print min, max, etc.
+
+	}
 
 }

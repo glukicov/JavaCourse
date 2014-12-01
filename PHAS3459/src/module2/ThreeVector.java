@@ -1,95 +1,119 @@
 package module2;
 
-/*This class: 1)defines the data needed to stores a 3-vector object (Cartesian coordinates) 
- 				2) defines methods that can manipulate those vector objects. 
- */
-
 public class ThreeVector {
 
-	//Initialising the (instance) variables (vector components) that only belong to this class
-	private double x;
-	private double y;
-	private double z;
+	// Initialise variables
+	// Private to avoid modifying vector data after instantiation
+	private double x = 0;
+	private double y = 0;
+	private double z = 0;
 
-	//Creating an empty constructor is not necessary in our case!
-	//public ThreeVector(){}
+	// Constructors
+	public ThreeVector() {}
 
-	//Constructor to define an object representing a three vector
-	public ThreeVector(double x, double y, double z){
-		//the instance variable x1 (on the left) of this object gets assigned the value 
-		//of the local variable x1(the one passed into the constructor)
-		this.x=x;   
-		this.y=y;
-		this.z=z;
+	public ThreeVector(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
-	/* Methods that are declared as public can be accessed from outside this class
-	 static methods belongs to the class and not an instance of that class(object of the class)
-	 non-static methods require an object
-	 */
-
-	// Converting object (vector) to a string for print out
-	public  String toString() { 
-		return "(" +x+ "," +y+ "," +z+ ")";
+	// Vector magnitude = sqrt(x^2 + y^2 + z^2)
+	double magnitude() {
+		double mag = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
+		return mag;
 	}
 
-	// Defining the input of function magnitude with double as return type
-	double magnitude (){  
-		// Defining the return of the function 
-		return Math.sqrt(x*x+y*y+z*z);
+	// Unit vector = [x/mag, y/mag, z/mag]
+	ThreeVector unitVector() {
+
+		// Check for null vector to prevent returning NaN's
+		if ( this.magnitude() == 0 ) {
+			// Return null unit vector if vector is null
+			ThreeVector unitVec  = new ThreeVector();
+			return unitVec;
+		}
+		else {
+			// Return correctly calculated unit vector
+			ThreeVector unitVec  = new ThreeVector(this.x/this.magnitude(), this.y/this.magnitude(), this.z/this.magnitude());
+			return unitVec;
+		}
 	}
 
-	//Creating a unit vector method
-	ThreeVector unitVector(){
-		double unit_x=x/magnitude();
-		double unit_y=y/magnitude();
-		double unit_z=z/magnitude();
-		return new ThreeVector(unit_x,unit_y,unit_z);
+	// Nicely formatted output string for displaying vector data
+	public String toString() {
+		String vecString = "["+this.x+" "+this.y+" "+this.z+"]" ;
+		return vecString;
 	}
 
-	// Scalar Product between two vector objects(A, B)
-	static double scalarProduct (ThreeVector A, ThreeVector B){
-		return A.x*B.x+A.y*B.y+A.z*B.z;
+	// Dot product = x1.x2 + y1.y2 + z1.z2
+	static double scalarProduct(ThreeVector v1, ThreeVector v2) {
+		double dotProduct = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+		return dotProduct;
 	}
 
-	// Vector Product methods with return type as ThreeVector object
-	static ThreeVector vectorProduct (ThreeVector A, ThreeVector B){
-		double i=(A.y*B.z)-(B.y*A.z);
-		double j=(A.z*B.x)-(B.z*A.x);
-		double k=(A.x*B.y)-(B.x*A.y);
-		return new ThreeVector(i,j,k);
-	}
-	//Adding two vectors
-	static ThreeVector add (ThreeVector A, ThreeVector B){
-		return new ThreeVector(A.x+B.x,A.y+B.y,A.z+B.z);
-	}
+	// Vector product = (y1*z2 - z1*y2)i + (z1*x2 - x1*z2)i + (x1*y2 - y1*x2)k
+	static ThreeVector vectorProduct(ThreeVector v1, ThreeVector v2) {
 
-	//Getting angle (in rad) between two vectors through scalar product
-	static double angle (ThreeVector A, ThreeVector B){
-		double scalar_product=scalarProduct(A,B);
-		double magnitude=A.magnitude()*B.magnitude();
-		return Math.acos(scalar_product/magnitude);
+		// Initialise double array for new vector data
+		double[] crossProduct = new double[3];
+
+		// Calculate individual (i,j,k) elements of vector product
+		crossProduct[0] = v1.y*v2.z - v1.z*v2.y;
+		crossProduct[1] = v1.z*v2.x - v1.x*v2.z;
+		crossProduct[2] = v1.x*v2.y - v1.y*v2.x;
+
+		// Instantiate new ThreeVector object with vector product components
+		ThreeVector v3 = new ThreeVector(crossProduct[0],crossProduct[1],crossProduct[2]);
+		return v3;
 	}
 
-	//Non static (require object) versions of above methods:
-	// We can even assign the same name to the non-static methods as static ones ! (overloading)
+	// Vector addition = (x1 + x2)i + (y1 + y2)j + (z1 + z2)k
+	static ThreeVector add(ThreeVector v1, ThreeVector v2) {
 
-	double scalarProduct(ThreeVector B){
-		return ThreeVector.scalarProduct(this, B);
+		// Initialise double array for new vector data
+		double[] vectorAdd = new double[3];
+
+		// Add individual components for new vector
+		vectorAdd[0] = v1.x + v2.x;
+		vectorAdd[1] = v1.y + v2.y;
+		vectorAdd[2] = v1.z + v2.z;
+
+		// Instantiate new ThreeVector object with new vector components
+		ThreeVector v3 = new ThreeVector(vectorAdd[0],vectorAdd[1],vectorAdd[2]);
+		return v3;
 	}
 
-	ThreeVector vectorProduct(ThreeVector B){
-		return ThreeVector.vectorProduct(this, B);
+	// Angle between two vectors = arccos(v1.v2)/(|v1|*|v2|)
+	static double angle(ThreeVector v1, ThreeVector v2) {
+
+		// Initialise vectorAngle variable now in case of zero magnitudes
+		double vectorAngle = 0;
+
+		// Calculate dot product between vectors
+		double dotProd = ThreeVector.scalarProduct(v1, v2);
+
+		// Only calculate angle if magnitude of both vectors > 0
+		if (v1.magnitude() != 0 && v2.magnitude() != 0) {
+			vectorAngle = Math.acos(dotProd/(v1.magnitude()*v2.magnitude()));
+		}
+		return vectorAngle;
 	}
 
-	ThreeVector add(ThreeVector B){
-		return ThreeVector.add(this, B);
+	// Non-static versions of methods
+	double scalarProduct(ThreeVector v1) {
+		return scalarProduct(this, v1);
 	}
 
-	double angle(ThreeVector B){
-		return angle(this, B);
+	ThreeVector vectorProduct(ThreeVector v1) {
+		return vectorProduct(this, v1);
 	}
 
+	ThreeVector add(ThreeVector v1) {
+		return add(this, v1);
+	}
 
+	double angle(ThreeVector v1) {
+		return angle(this, v1);
+	}
 
 }
