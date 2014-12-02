@@ -26,7 +26,7 @@ public class Samples implements Comparable<Samples> {
 
 	
 	
-							//This code works with Comparable for sorting by int (id)
+	//This code works with Comparable for sorting by int (id)
 	public int compareTo(Samples compareId) {
 		int compareCode = ((Samples) compareId).getCode(); 
 

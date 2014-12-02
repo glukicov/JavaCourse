@@ -1,0 +1,77 @@
+package exam1_take2;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * 
+ * @author Gleb
+ * This class implements and extends on methods defined in SelectMethods interface to be used in Main
+ */
+
+public class Methods implements Interface {
+
+
+
+	/**
+	 * A method....  
+	 * @param url
+	 * @return data
+	 * @throws IOException
+	 */
+	public ArrayList<DataFormatDistance> readPlanetsWithDistance(String url) throws IOException {
+		URL u = new URL(url);
+		InputStream is = u.openStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		ArrayList<DataFormatDistance> data = new  ArrayList<DataFormatDistance>();
+		String line;
+		Scanner scanner = new Scanner(br);
+		//Move to next line
+		scanner.nextLine();
+		//scanner.useDelimiter(",");
+		//consume the whole line
+
+		while (scanner.hasNextLine()) {
+			line = scanner.nextLine();
+			//System.out.println("line=" +line);
+
+			Scanner scan = new Scanner(line);
+			scan.useDelimiter(",");
+			String name=scan.next(); 
+			//System.out.println("name=" +name);
+			int year=scan.nextInt();
+			//System.out.println("year= "+year);
+			String method=scan.next(); 
+			//System.out.println("method ="+method);
+			double mass=scan.nextDouble(); 
+		//	System.out.println("mass= "+mass);
+			double separation=scan.nextDouble(); 
+			//System.out.println("separation "+separation);
+
+			//If no distance column move on...
+			double distance = 0;
+			//System.out.println(distance);
+			if (scan.hasNextDouble()) {
+				distance =  scan.nextDouble();
+			//	System.out.println("distance ="+distance);
+				data.add(new DataFormatDistance(name, year, method, mass, separation, distance));
+			}
+			scan.close();
+		}
+		scanner.close();
+		return data;
+	}
+
+
+
+
+
+
+
+}

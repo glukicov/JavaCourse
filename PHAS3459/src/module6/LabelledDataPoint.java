@@ -17,7 +17,7 @@ public class LabelledDataPoint extends DataPoint {
 	// overwrite toString method as defined in DataPoint
 	
 	public String toString(){
-		return this.label+": x= "+this.x+", y= "+this.y+" +- "+this.ey+"";
+		return super.toString() + "label=" + this.label;
 	}
 	
 	
