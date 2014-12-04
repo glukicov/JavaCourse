@@ -69,6 +69,50 @@ public class Methods implements Interface {
 	}
 
 
+	/**
+	 * A method....  
+	 * @param url
+	 * @return data
+	 * @throws IOException
+	 */
+	public ArrayList<DataFormat> readPlanets(String url) throws IOException {
+		URL u = new URL(url);
+		InputStream is = u.openStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		ArrayList<DataFormat> data = new  ArrayList<DataFormat>();
+		String line;
+		Scanner scanner = new Scanner(br);
+		//Move to next line
+		scanner.nextLine();
+		//scanner.useDelimiter(",");
+		//consume the whole line
+
+		while (scanner.hasNextLine()) {
+			line = scanner.nextLine();
+			line= line.trim();
+			//System.out.println("line=" +line);
+
+			Scanner scan = new Scanner(line);
+			scan.useDelimiter(",");
+			 
+			String name=scan.next(); 
+			//System.out.println("name=" +name);
+			int year=scan.nextInt();
+			//System.out.println("year= "+year);
+			String method=scan.next(); 
+			//System.out.println("method ="+method);
+			double mass=scan.nextDouble(); 
+		//	System.out.println("mass= "+mass);
+			double separation=scan.nextDouble(); 
+			//System.out.println("separation "+separation);
+	
+			data.add(new DataFormat(name, year, method, mass, separation));
+			scan.close();
+		}
+		scanner.close();
+		return data;
+	}
 
 
 

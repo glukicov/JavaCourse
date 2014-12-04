@@ -46,7 +46,7 @@ public class DataFormat {
 		
 	  //Method to output values as a string
 		public String toString() {
-			return ""+this.name+", "+this.year+", "+this.method+", "+this.mass+", "+this.separation+"";
+			return "Name: "+this.name+", Discovered: "+this.year+", Method: "+this.method+", Mass "+this.mass+", Jup.Mass., Separation "+this.separation+"\n";
 		}
 	    
 	}

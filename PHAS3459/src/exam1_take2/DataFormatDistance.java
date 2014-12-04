@@ -32,7 +32,7 @@ public class DataFormatDistance extends DataFormat {
 
 	//Method to output values as a string
 	public String toString() {
-		return super.toString() + " distance="+this.distance+"\n";
+		return super.toString() + " distance:"+this.distance+" a.u. \n";
 	}
 
 	

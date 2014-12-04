@@ -15,7 +15,7 @@ public interface Interface {
      */
 	public ArrayList<DataFormatDistance> readPlanetsWithDistance(String url) throws IOException;
     
-    
+	public ArrayList<DataFormat> readPlanets(String url) throws IOException;
 
 
 
