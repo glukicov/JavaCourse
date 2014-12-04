@@ -1,4 +1,4 @@
-package aaaSHORTCUTS;
+package exam2012;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public interface Interface {
 	// See Methods.java for methods and functions definitions
 	
 	
-	public ArrayList<DataFormat> readData(String url) throws IOException;
+	public ArrayList<Background> readBackground(String url) throws IOException;
 
 	
 	

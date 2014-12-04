@@ -1,6 +1,7 @@
 package aaaSHORTCUTS;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /** Main class for displaying the results:
  *
@@ -28,11 +29,24 @@ public class Main {
 			//to use its non-static methods for data analysis and data input, etc. 
 			// (see Methods.java for the definitions of the custom methods and functions used)
 			Methods m = new Methods();
-
 			
+			//Storing the data in the array list collection
+			ArrayList<DataFormat> data = m.readData(url);
+			System.out.println("Data:");
+			System.out.println(data);
+			
+			/*
+			//Using collection Iterator to loop though all items 
+			for(DataFormat item : planets){
+				if (item.getMethod().equals("Timing")){
+							arrayTiming.add(item);
+						}
+					}
+			*/
 			
 /*
-			//Using a custom comparator to sort out the collection object by 
+			//Using a custom comparator to sort in acceding order the collection 
+			// object by  
 			Collections.sort(arrayTiming, new Comparator<DataFormat>() {
 				@Override
 				public int compare(DataFormat c1, DataFormat c2) {
@@ -45,7 +59,7 @@ public class Main {
 
 		} 
 		
-//		catch (IOException e){System.out.println("An error has occurred: "+e.getMessage());}
+		catch (IOException e){System.out.println("An error has occurred: "+e.getMessage());}
 		finally {System.out.println("Task execution completed! Have a nice day!");}
 
 	}

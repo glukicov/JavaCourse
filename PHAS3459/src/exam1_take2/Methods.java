@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import exam2012.Higgs;
+
 /**
  * 
  * @author Gleb
@@ -19,10 +21,11 @@ public class Methods implements Interface {
 
 
 	/**
-	 * A method....  
-	 * @param url
-	 * @return data
-	 * @throws IOException
+	 * A method to read the data using a buffer from a URL address (input),
+	 * scan through the data and store it a collection object (output)
+	 * @param url as a string (e.g. www.google.com)
+	 * @return data as a collection object
+	 * @throws IOException (e.g. thrown if URL is not valid) 
 	 */
 	public ArrayList<DataFormatDistance> readPlanetsWithDistance(String url) throws IOException {
 		URL u = new URL(url);
@@ -112,6 +115,13 @@ public class Methods implements Interface {
 		}
 		scanner.close();
 		return data;
+	}
+
+
+	@Override
+	public ArrayList<Higgs> readHiggs(String url) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
