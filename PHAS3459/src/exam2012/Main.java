@@ -29,7 +29,8 @@ public class Main {
 	static double totalGG=0;
 	static double eventsZZ=0;
 	static double eventsGG=0;
-	
+	static double energyHiggs=0;
+
 	public static void main(String[] args) {
 
 		try {
@@ -45,7 +46,7 @@ public class Main {
 
 			//Using collection Iterator to loop though all items 
 			//and delete energies outside of the range 
-			
+
 			ArrayList<Background> newGG = new ArrayList<Background>();
 			for(Background item1 : dataGG){
 				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
@@ -53,7 +54,7 @@ public class Main {
 					totalGG=totalGG+item1.getEvents();
 				}
 			}
-			
+
 			ArrayList<Background> newZZ = new ArrayList<Background>();
 			for(Background item2 : dataZZ){
 				if (item2.getLowBin()>=120 && item2.getHighBin()<=140){
@@ -62,16 +63,16 @@ public class Main {
 					totalZZ=totalZZ+item2.getEvents();
 				}
 			}
-			
-						
+
+
 			System.out.printf("Toal GG %10.3f%n",totalGG);
 			System.out.printf("Toal ZZ %10.3f%n",totalZZ);
-			
+
 			ArrayList<Higgs> higgsData=m.readHiggs(URLHiggs);
 
 			ArrayList<Higgs> higgsZZ = new ArrayList<Higgs>();
 			ArrayList<Higgs> higgsGG = new ArrayList<Higgs>();
-			
+
 			for (Higgs item : higgsData){
 				if(item.getEventID().equals("GG")){
 					higgsGG.add(item);
@@ -84,7 +85,72 @@ public class Main {
 			}
 			System.out.printf("Total of %10.3f%n GG events ", eventsGG);
 			System.out.printf("Total of %10.3f%n ZZ events ", eventsZZ);
+
+			//Now creating an empty binsGG array and import the bins from dataGG (low and high)
+			//Leaving the events number as 0, which will be filled later from higgsGG
+			ArrayList<Background> binsGG = new ArrayList<Background>();
+			ArrayList<Background> binsZZ = new ArrayList<Background>();
+
+			for (Background item : dataGG){
+				item.setEvents(0);
+				binsGG.add(item);
+			}
+			for (Background item : dataZZ){
+				item.setEvents(0);
+				binsZZ.add(item);
+			}
+
+
+			//For GG and ZZ: For each of 100 bins:
+			// extract each Higgs event one by one, compare it 
+			//with Low and High bin, if it belongs to that bin -> counter +1
+			// record total number of events per bin
+
+
+			for (int i=0; i<100;i++){
+			for (Higgs event: higgsGG){
+			//	for (int i=0; i>=binsGG.size();i++){
+					energyHiggs=event.getEventEnergy();
+				//	System.out.println("energyHiggs= "+energyHiggs);
+			//		System.out.println("i= "+i+"\n");
+				
+					int low = binsGG.get(i).getLowBin();
+				//	System.out.println("low= "+low);
+					int high = binsGG.get(i).getHighBin();
+			//		System.out.println("high= "+high);
+					boolean test = energyHiggs<=high && energyHiggs>=low;
+			//		System.out.println("test= "+test);
+					if (test){
+						binsGG.get(i).iEvents();
+				//		System.out.println("binsGG.get(i)= "+binsGG.get(i));
+					}
+
+				}
+			for (Higgs event: higgsZZ){
+				//	for (int i=0; i>=binsGG.size();i++){
+						energyHiggs=event.getEventEnergy();
+					//	System.out.println("energyHiggs= "+energyHiggs);
+				//		System.out.println("i= "+i+"\n");
+					
+						int low = binsZZ.get(i).getLowBin();
+					//	System.out.println("low= "+low);
+						int high = binsZZ.get(i).getHighBin();
+				//		System.out.println("high= "+high);
+						boolean test = energyHiggs<=high && energyHiggs>=low;
+				//		System.out.println("test= "+test);
+						if (test){
+							binsZZ.get(i).iEvents();
+					//		System.out.println("binsGG.get(i)= "+binsGG.get(i));
+						}
+
+					}
+			}
+			//System.out.println(binsGG);
+			//System.out.println(binsZZ);
 			
+			
+			
+		
 			
 			/*
 			//Using a custom comparator to sort in acceding order the collection 

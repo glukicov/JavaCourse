@@ -15,7 +15,7 @@ public class Background {
 	private int lowBin;
 	private int highBin;
 	private double events;
-
+	
 	/**
 	 * // Construct data point for PLANETS WITHOUT DISTANCE 
 	 * @param lowBin
@@ -25,6 +25,20 @@ public class Background {
 	public Background(int lowBin, int highBin, double events){
 		this.lowBin=lowBin; this.highBin=highBin; this.events=events;
 	}
+	
+	//Setter methods
+	public void setEvents(double events) {
+	this.events=events;
+	}
+	
+	public void iEvents() {
+		this.events=this.events+1;
+		}
+	
+	//Adder + setter methods
+	public void addEvents(int lowBin, int highBin, int value) {
+		this.lowBin=lowBin; this.highBin=highBin; this.events=events+value;
+		}
 	
 	//Getter methods
 	public int getLowBin() {
