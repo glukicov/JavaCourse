@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /** Main class for displaying the results:
  *
- * 
+ * Provides not so elegant and resource heavy solution, but hey, it works! 
  * <p>
  *  
  * <p>
@@ -24,12 +24,14 @@ public class Main {
 	private static final String urlZZ ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/backgroundZZ.txt";
 	private static final String URLHiggs ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/higgsData.txt";
 
-
-	static double totalZZ=0;
-	static double totalGG=0;
+	//Counter variables with extended scope (!! use with great care!!)
+	static double predictedCounterZZ=0;
+	static double predictedCounterGG=0;
 	static double eventsZZ=0;
 	static double eventsGG=0;
 	static double energyHiggs=0;
+	static double measuredCounterZZ=0;
+	static double measuredCounterGG=0;
 
 	public static void main(String[] args) {
 
@@ -39,132 +41,153 @@ public class Main {
 			// (see Methods.java for the definitions of the custom methods and functions used)
 			Methods m = new Methods();
 
-			//Storing the backgorund data in the array list collection
-			ArrayList<Background> dataGG = m.readBackground(urlGG);
-			ArrayList<Background> dataZZ = m.readBackground(urlZZ);
+			//Storing the background data in the array list collections
+			ArrayList<Background> totalBackgroundGG = m.readBackground(urlGG);
+			ArrayList<Background> totalBackgroundZZ = m.readBackground(urlZZ);
 
 
 			//Using collection Iterator to loop though all items 
-			//and delete energies outside of the range 
+			//and add energies to new arrays in the range 120-140 Gev
+			// those are the predicted (theory) values for events per bin
+			//use counter to get the total number of events immediately 
 
-			ArrayList<Background> newGG = new ArrayList<Background>();
-			for(Background item1 : dataGG){
+			ArrayList<Background> predictedGG = new ArrayList<Background>();
+			for(Background item1 : totalBackgroundGG){
 				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
-					newGG.add(item1);
-					totalGG=totalGG+item1.getEvents();
+					predictedGG.add(item1);
+					predictedCounterGG=predictedCounterGG+item1.getEvents();
 				}
 			}
 
-			ArrayList<Background> newZZ = new ArrayList<Background>();
-			for(Background item2 : dataZZ){
+			//Same for ZZ:
+			ArrayList<Background> predictedZZ = new ArrayList<Background>();
+			for(Background item2 : totalBackgroundZZ){
 				if (item2.getLowBin()>=120 && item2.getHighBin()<=140){
-					newZZ.add(item2);
-					System.out.println(item2.getEvents());					
-					totalZZ=totalZZ+item2.getEvents();
+					predictedZZ.add(item2);
+					predictedCounterZZ=predictedCounterZZ+item2.getEvents();
 				}
 			}
+			
 
+			System.out.printf("Total GG %10.3f background events expected in 120-140 Gev\n",predictedCounterGG);
+			System.out.printf("Total ZZ %10.3f background events expected in 120-140 Gev\n",predictedCounterZZ);
 
-			System.out.printf("Toal GG %10.3f%n",totalGG);
-			System.out.printf("Toal ZZ %10.3f%n",totalZZ);
-
+			
+			//Reading Higgs data for ZZ and GG			
 			ArrayList<Higgs> higgsData=m.readHiggs(URLHiggs);
+			//Creating array to store ALL highs events for each channel
+			ArrayList<Higgs> totalHiggsZZ = new ArrayList<Higgs>();
+			ArrayList<Higgs> totalHiggsGG = new ArrayList<Higgs>();
 
-			ArrayList<Higgs> higgsZZ = new ArrayList<Higgs>();
-			ArrayList<Higgs> higgsGG = new ArrayList<Higgs>();
-
+			//Sorting by channels and counting
 			for (Higgs item : higgsData){
 				if(item.getEventID().equals("GG")){
-					higgsGG.add(item);
+					totalHiggsGG.add(item);
 					eventsGG = eventsGG + 1;
 				}
 				if(item.getEventID().equals("ZZ")){
-					higgsZZ.add(item);
+					totalHiggsZZ.add(item);
 					eventsZZ = eventsZZ + 1;
 				}
 			}
-			System.out.printf("Total of %10.3f%n GG events ", eventsGG);
-			System.out.printf("Total of %10.3f%n ZZ events ", eventsZZ);
-
-			//Now creating an empty binsGG array and import the bins from dataGG (low and high)
-			//Leaving the events number as 0, which will be filled later from higgsGG
-			ArrayList<Background> binsGG = new ArrayList<Background>();
-			ArrayList<Background> binsZZ = new ArrayList<Background>();
-
-			for (Background item : dataGG){
+			
+			//Creating a duplicate arrays just to get the bins (see later)
+			ArrayList<Background> totalBackgroundGGempty = m.readBackground(urlGG);
+			ArrayList<Background> totalBackgroundZZempty = m.readBackground(urlZZ);
+			
+			//Now creating an empty totalMeasuredGG array and import the bins from totalBackgroundGGempty (low and high)
+			//Leaving the events number as 0, which will be filled later with events from higgsGG
+			ArrayList<Background> totalMeasuredGG = new ArrayList<Background>();
+			ArrayList<Background> totalMeasuredZZ = new ArrayList<Background>();
+			
+			//these arrays now have the bin widhts and 0 as events number
+			for (Background item : totalBackgroundGGempty){
 				item.setEvents(0);
-				binsGG.add(item);
+				totalMeasuredGG.add(item);
 			}
-			for (Background item : dataZZ){
+			for (Background item : totalBackgroundZZempty){
 				item.setEvents(0);
-				binsZZ.add(item);
+				totalMeasuredZZ.add(item);
 			}
-
-
-			//For GG and ZZ: For each of 100 bins:
-			// extract each Higgs event one by one, compare it 
+			
+		
+			
+			 // For each of 100 bins:
+			// extract each Higgs event one by one (for a channel), compare it 
 			//with Low and High bin, if it belongs to that bin -> counter +1
+			// and number of events is incremented with iEvents method (see Method class)
 			// record total number of events per bin
 
-
+		   //For GG for each one of 100 bins
 			for (int i=0; i<100;i++){
-			for (Higgs event: higgsGG){
-			//	for (int i=0; i>=binsGG.size();i++){
+			//extract higgs energy one by one
+				for (Higgs event: totalHiggsGG){
+					//store it in a temp. variable
 					energyHiggs=event.getEventEnergy();
-				//	System.out.println("energyHiggs= "+energyHiggs);
-			//		System.out.println("i= "+i+"\n");
-				
-					int low = binsGG.get(i).getLowBin();
-				//	System.out.println("low= "+low);
-					int high = binsGG.get(i).getHighBin();
-			//		System.out.println("high= "+high);
+					//get the bin width
+					int low = totalMeasuredGG.get(i).getLowBin();
+					int high = totalMeasuredGG.get(i).getHighBin();
+					//check if event belong to that bin
 					boolean test = energyHiggs<=high && energyHiggs>=low;
-			//		System.out.println("test= "+test);
+					//if it does -> add 1 to the event field in that energy range
+					// like a histogram! 
 					if (test){
-						binsGG.get(i).iEvents();
-				//		System.out.println("binsGG.get(i)= "+binsGG.get(i));
+						totalMeasuredGG.get(i).iEvents();
 					}
 
 				}
-			for (Higgs event: higgsZZ){
-				//	for (int i=0; i>=binsGG.size();i++){
+									
+			}
+						
+			
+			//Same for ZZ
+			for (int i=0; i<100;i++){
+			for (Higgs event: totalHiggsZZ){
 						energyHiggs=event.getEventEnergy();
-					//	System.out.println("energyHiggs= "+energyHiggs);
-				//		System.out.println("i= "+i+"\n");
 					
-						int low = binsZZ.get(i).getLowBin();
-					//	System.out.println("low= "+low);
-						int high = binsZZ.get(i).getHighBin();
-				//		System.out.println("high= "+high);
+						int low = totalMeasuredZZ.get(i).getLowBin();
+						int high = totalMeasuredZZ.get(i).getHighBin();
 						boolean test = energyHiggs<=high && energyHiggs>=low;
-				//		System.out.println("test= "+test);
 						if (test){
-							binsZZ.get(i).iEvents();
-					//		System.out.println("binsGG.get(i)= "+binsGG.get(i));
+							totalMeasuredZZ.get(i).iEvents();
 						}
 
 					}
 			}
-			//System.out.println(binsGG);
-			//System.out.println(binsZZ);
+						
+						
+			//For measured events in 120-140 Gev: extract the range into a new arrayList
+			ArrayList<Background> measuredGG = new ArrayList<Background>();
+			for(Background item1 : totalMeasuredGG){
+				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
+					measuredGG.add(item1);
+					measuredCounterGG=measuredCounterGG+item1.getEvents();
+				}
+			}
+			//same for ZZ:
+			ArrayList<Background> measuredZZ = new ArrayList<Background>();
+			for(Background item2 : totalMeasuredZZ){
+				if (item2.getLowBin()>=120 && item2.getHighBin()<=140){
+					measuredZZ.add(item2);
+					measuredCounterZZ=measuredCounterZZ+item2.getEvents();
+				}
+			}
+		
+
+			System.out.printf("Total GG %10.3f candidate events measured in 120-140 Gev\n",measuredCounterGG);
+			System.out.printf("Total ZZ %10.3f candidate events measured in 120-140 Gev\n",measuredCounterZZ);
+			
+			//Print out the arrays! Notice the right energy range and
+			// different number of events per bin for EXPECTED vs MEASURED
+			//WOOOOOOOOOOOOOOOOOOOOO
+		//	System.out.println(predictedZZ);
+		//	System.out.println(measuredZZ);
+			System.out.println(predictedGG);
+			System.out.println(measuredGG);
 			
 			
 			
 		
-			
-			/*
-			//Using a custom comparator to sort in acceding order the collection 
-			// object by  
-			Collections.sort(arrayTiming, new Comparator<DataFormat>() {
-				@Override
-				public int compare(DataFormat c1, DataFormat c2) {
-					return Double.compare(c1.getMass(), c2.getMass());
-				}
-			});
-
-			 */
-
-
 		} 
 
 		catch (IOException e){System.out.println("An error has occurred: "+e.getMessage());}
