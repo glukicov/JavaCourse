@@ -23,6 +23,22 @@ public class Methods implements Interface {
 	 * @throws IOException
 	 */
 
+	/**
+	 * A method....  
+	 * @param y-predicted, n-measured
+	 * @return log-likelihood
+	 * 
+	 */
+	public double logL(ArrayList<Background> y,ArrayList<Background> n){
+		double sum=0;
+		for (int i=0; i<y.size();i++){
+		sum=sum+(y.get(i).getEvents()-n.get(i).getEvents()+((n.get(i).getEvents())*Math.log((n.get(i).getEvents()/y.get(i).getEvents()))));	
+		}
+		return sum;
+	}
+	
+	
+	
 
 	/**
 	 * A method to read the data using a buffer from a URL address (input),

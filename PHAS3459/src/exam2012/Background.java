@@ -34,12 +34,7 @@ public class Background {
 	public void iEvents() {
 		this.events=this.events+1;
 		}
-	
-	//Adder + setter methods
-	public void addEvents(int lowBin, int highBin, int value) {
-		this.lowBin=lowBin; this.highBin=highBin; this.events=events+value;
-		}
-	
+		
 	//Getter methods
 	public int getLowBin() {
 		return this.lowBin;

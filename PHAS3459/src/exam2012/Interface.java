@@ -16,7 +16,7 @@ public interface Interface {
 	
 	public ArrayList<Background> readBackground(String url) throws IOException;
 
-	
+	public double logL(ArrayList<Background> y,ArrayList<Background> n);
 	
 		}
 

@@ -182,10 +182,11 @@ public class Main {
 			//WOOOOOOOOOOOOOOOOOOOOO
 		//	System.out.println(predictedZZ);
 		//	System.out.println(measuredZZ);
-			System.out.println(predictedGG);
-			System.out.println(measuredGG);
+		//	System.out.println(predictedGG);
+		//	System.out.println(measuredGG);
 			
-			
+			System.out.println("LL of GG for 120-140 GeV:"+m.logL(predictedGG,measuredGG));
+			System.out.println("LL of ZZ for 120-140 GeV:"+m.logL(predictedZZ,measuredZZ));
 			
 		
 		} 
