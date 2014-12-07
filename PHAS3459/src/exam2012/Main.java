@@ -188,7 +188,86 @@ public class Main {
 			System.out.println("LL of GG for 120-140 GeV:"+m.logL(predictedGG,measuredGG));
 			System.out.println("LL of ZZ for 120-140 GeV:"+m.logL(predictedZZ,measuredZZ));
 			
-		
+			
+			
+			
+			
+			
+			/**
+			 * 								Part II
+			 * //Do this for each mass in the increment of 1 for number of signals provided
+			// for each of mass of higgs in increment of 1
+			// for each of the energy bins
+			 * 
+			 */
+			
+			ArrayList<Background> signalsGG = m.readBins(urlGG);	
+			ArrayList<Background> gausGG = new ArrayList<Background>();
+			gausGG=m.retrunHiggsEvents(80, 100, 2, signalsGG);
+			//System.out.println(gausGG);
+			
+			ArrayList<Background> signalsZZ = m.readBins(urlZZ);	
+			ArrayList<Background> gausZZ = new ArrayList<Background>();
+			gausZZ=m.retrunHiggsEvents(80, 6, 1, signalsZZ);
+		//	System.out.println(gausZZ);
+			
+			//For estimated Higgs Signals events in 120-140 Gev: extract the range into a new arrayList
+			ArrayList<Background> signalGG = new ArrayList<Background>();
+			for(Background item1 : gausGG){
+				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
+					signalGG.add(item1);
+				}
+			}
+			//same for ZZ:
+			ArrayList<Background> signalZZ = new ArrayList<Background>();
+			for(Background item1 : gausZZ){
+				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
+					signalZZ.add(item1);
+				}
+			}
+			
+			//System.out.println(signalGG);
+			//System.out.println(signalZZ);	
+					
+			
+			//Adding the total number of simulated events (signals) and background (part I)
+			ArrayList<Background> emptytotalGG = m.readBins(urlGG);
+			ArrayList<Background> totalGG = new ArrayList<Background>();
+			for(Background item1 : emptytotalGG){
+				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
+					totalGG.add(item1);
+				}
+			}
+			for (int i=0; i<20; i++){
+				double predictedEvent = predictedGG.get(i).getEvents();
+				double signalEvent = signalGG.get(i).getEvents();
+				totalGG.get(i).addEvents(predictedEvent+signalEvent);
+			
+			}
+			
+			ArrayList<Background> emptytotalZZ = m.readBins(urlZZ);
+			ArrayList<Background> totalZZ = new ArrayList<Background>();
+			for(Background item1 : emptytotalZZ){
+				if (item1.getLowBin()>=120 && item1.getHighBin()<=140){
+					totalZZ.add(item1);
+				}
+			}
+			for (int i=0; i<20; i++){
+				double predictedEvent = predictedZZ.get(i).getEvents();
+				double signalEvent = signalZZ.get(i).getEvents();
+				totalZZ.get(i).addEvents(predictedEvent+signalEvent);
+			
+			}
+					
+			System.out.println("LL of GG for 120-140 GeV signal vs experiment:"+m.logL(totalGG,measuredGG));
+			System.out.println("LL of ZZ for 120-140 GeV signal vs experiment:"+m.logL(totalZZ,measuredZZ));			
+			
+			double minChannelGGLL=m.logLMIN(totalGG,measuredGG);
+			int minChannelGGLLID=m.logLID(totalGG,measuredGG);
+			
+			System.out.println("minChannelGGLL"+minChannelGGLL);
+			System.out.println("minChannelGGLLID"+minChannelGGLLID);
+			
 		} 
 
 		catch (IOException e){System.out.println("An error has occurred: "+e.getMessage());}

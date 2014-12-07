@@ -31,6 +31,10 @@ public class Background {
 	this.events=events;
 	}
 	
+	public void addEvents(double number) {
+		this.events=this.events+number;
+		}
+	
 	public void iEvents() {
 		this.events=this.events+1;
 		}

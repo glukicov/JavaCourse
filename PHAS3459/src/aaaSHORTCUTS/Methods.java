@@ -53,7 +53,10 @@ public class Methods implements Interface {
 		while (scanner.hasNextLine()) {
 			line = scanner.nextLine();
 			//System.out.println("line=" +line);
-
+			
+			//Trim for whitesapces if appropriate 
+			line.trim();
+			
 			Scanner scan = new Scanner(line);
 			scan.useDelimiter(",");
 			String name=scan.next(); 

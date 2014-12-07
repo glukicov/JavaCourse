@@ -18,5 +18,11 @@ public interface Interface {
 
 	public double logL(ArrayList<Background> y,ArrayList<Background> n);
 	
+	public ArrayList<Background> retrunHiggsEvents(int signals, int normalisation, int width, ArrayList<Background> bins);
+	
+	public double logLMIN(ArrayList<Background> y,ArrayList<Background> n);
+	
+	public int logLID(ArrayList<Background> y,ArrayList<Background> n);
+	
 		}
 
