@@ -1,4 +1,4 @@
-package exam2_2013;
+package exam2013;
 
 /**
  * Defining an interface to be used by the main classes (to link non-static methods from Methods class)

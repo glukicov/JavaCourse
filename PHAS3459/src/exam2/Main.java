@@ -1,4 +1,4 @@
-package aaaSHORTCUTS;
+package exam2;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class Main {
 			//Storing the data in the array list collection
 			ArrayList<DataFormat> data = m.readData(url);
 			System.out.println("Data:");
-			System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
+		    System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
 			
 			/*
 			//Using collection Iterator to loop though all items 

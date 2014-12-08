@@ -122,4 +122,50 @@ public class Methods implements Interface {
 		return dataArray;
 	}
 
+
+	public ArrayList<Integer> getYears(String url) throws IOException {
+		//taking a URL (string) as an input
+		URL u = new URL(url);
+		//Opening stream to read bytes
+		InputStream is = u.openStream();
+		//Opening steam to read characters
+		InputStreamReader isr = new InputStreamReader(is);
+		// Creating BufferedReader from InputStreamReader object to read lines
+		BufferedReader br = new BufferedReader(isr);
+		//Creating an empty collection object to hold the data
+		ArrayList<Integer> dataArray = new  ArrayList<Integer>();
+		String line;
+		//Creating a scanner to look though data 
+		Scanner scanner = new Scanner(br);
+
+		//Looping over all lines, one by one
+		//and store the appropriate elements in temporary variables
+		while (scanner.hasNextLine()) {
+			line = scanner.nextLine();
+
+			Scanner scan = new Scanner(line);
+
+			String code=scan.next(); 
+
+			int year=scan.nextInt();
+
+			int month=scan.nextInt();
+
+			String type=scan.next(); 
+
+			String data=scan.nextLine(); 
+
+
+			//If not TMAX don't add
+			if (type.equals("TMAX")) {
+				dataArray.add(year);
+			}
+			//Explicitly closing and flushing the scanner
+			scan.close();
+		}
+		//Explicitly closing and flushing the scanner
+		scanner.close();
+		return dataArray;
+	}
+
 }

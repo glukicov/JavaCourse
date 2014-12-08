@@ -1,4 +1,4 @@
-package exam2_2013;
+package exam2013;
 
 import java.io.IOException;
 import java.util.ArrayList;

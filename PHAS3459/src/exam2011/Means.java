@@ -35,7 +35,7 @@ public class Means{
 		
   //Method to output values as a string
 	public String toString() {
-		return "code: "+this.code+", mean: "+this.mean+"\n";
+		return "Country code: "+this.code+", mean temperature: "+this.mean+ " +/- 0.1 C";
 	}
 	
 }

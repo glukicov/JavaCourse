@@ -1,4 +1,4 @@
-package exam2_2013;
+package exam2013;
 
 /** This class stores the data in appropriate format to be used by a collection object in Main
  * 
