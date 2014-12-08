@@ -4,14 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Scanner;
-import java.util.Set;
 
 /** Main class for displaying the results:
  *
- * 
+ * blah-blah-blah....
  * <p>
  *  
  * <p>
@@ -26,12 +22,19 @@ import java.util.Set;
 public class Main {
 
 	//Storing URL variable
-	private static final String urlReadings ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2010-11/final/readings.txt";
-	private static final String urlStations ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2010-11/final/stations.txt";
-	private static final String urlCountries ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2010-11/final/countries.txt";
-
-	//Initialisin' bloody counter variables 
-
+	private static final String urlRegions ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/final/regions.txt";
+	private static final String urlPopulations ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/final/populations.txt";
+	private static final String urlXYZ ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/final/occurrencesXYZ.txt";
+	private static final String urlAB ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/2011-12/final/occurrencesAB.txt";
+	public static double occA = 0;
+	public static double occB = 0;
+	public static double occX = 0;
+	public static double occY = 0;
+	public static double occZ = 0;
+	public static double meanA = 0;
+	public static double meanB = 0;
+	public static double stdDA = 0;
+	public static double stdDB = 0;
 
 	public static void main(String[] args) {
 
@@ -41,301 +44,189 @@ public class Main {
 			// (see Methods.java for the definitions of the custom methods and functions used)
 			Methods m = new Methods();
 
-			//Storing the TMAX data only in the array list collection
-			ArrayList<Readings> dataTMAX = m.readTMAXData(urlReadings);
-			//	System.out.println("Data:");
-			//	System.out.println(dataTMAX);
-			//	System.out.println(dataTMAX.size());
+			//Storing all data as ArrayList - I love array lists:
+			//	Easy to work with: sort, iterate, etc.
+			//  Obvious choice, duh! 
+		
+			ArrayList<Reg> regions = m.readRegions(urlRegions);			
 
-			HashMap<String,String> countries =m.readNames(urlCountries);
-			HashMap<String,String> stations = m.readNames(urlStations);
+			ArrayList<Pop> populations = m.readPopulations(urlPopulations);
 
-			//	System.out.println(countries+"\n");
-			//	System.out.println(stations);
-			//		System.out.println(countries.size());
-			//	    System.out.println(stations.size());
+			ArrayList<AB> ab =m.readAB(urlAB);
 
-			//Now we gonna devise a clever and painful method to extract the bloody Max T. value from
-			// the bloody arrayList which has temperatures stored as a string
-			// oh and, be ware of -9999!!!!
-			// FFS
-			// Should have done History of Art! 
+			ArrayList<XYZ> xyz =m.readXYZ(urlXYZ);
 
-			// Create an empty array to hold 669 max temp for each line
-			ArrayList<Integer> maxTempdata = new ArrayList<Integer>();
-			//For each line of dataTMAX
-			for (Readings item: dataTMAX){
-				//extract the data string
-				String line=item.getData();
-				//put into scanner
-				Scanner scan = new Scanner(line);
-				// new array list to old the numbers for line
-				ArrayList<Integer> numbers = new ArrayList<Integer>();
-				while (scan.hasNextInt()) {
-					numbers.add(scan.nextInt());
-				}
-				//Find the largest in array
-				int maxTemp = Integer.MIN_VALUE;
-				for (Integer number : numbers) {
+			// Finding the total population using the great power of Array LIst!
+			int sumOfPopulation=0;
+			for (Pop item: populations){
+				sumOfPopulation=sumOfPopulation+item.getPopulation();
+			}
+			System.out.println("Total UK population in question " +sumOfPopulation);
 
-					if (number > maxTemp && number != -9999) {
-						maxTemp = number;
+			//For A per capita: //same for others....
+			//First find total A occ.
+			double sumA = 0;
+			double sumB = 0;
+			for (AB item : ab){
+				sumA=sumA+item.getA();
+				sumB=sumB+item.getB();
+			}
+			//Find the population which was surveyed for A and B
+			double sumOfPopulationAB = 0;
+			for (int i=0; i<ab.size(); i++){
+				String code=ab.get(i).getCode();
+				for (Pop p: populations){
+					if (p.getCode().equals(code)){
+						sumOfPopulationAB=sumOfPopulationAB+p.getPopulation();
 					}
-
 				}
-				maxTempdata.add(maxTemp);	
 			}
-			//Finding the ID (position) of the highest T element
-			int maxID=0;
-			//System.out.println(maxTempdata);
-			//System.out.println(maxTempdata.size());
-			int maxTemp = Integer.MIN_VALUE;
-			for (int i=0;i<maxTempdata.size(); i++){
-				if (maxTempdata.get(i) > maxTemp) {
-					maxTemp = maxTempdata.get(i);
-					maxID=i;
-				}
-
+			//Same for XYZ 
+			double sumX = 0;
+			double sumY = 0;
+			double sumZ = 0;
+			for (XYZ item : xyz){
+				sumX=sumX+item.getX();
+				sumY=sumY+item.getY();
+				sumZ=sumZ+item.getZ();
 			}
-			//System.out.println(maxTemp);
-			//System.out.println(maxID);
-			//Fining other details 
-			String code =dataTMAX.get(maxID).getCode();
-			int year =dataTMAX.get(maxID).getYear();
-			int monthID =dataTMAX.get(maxID).getMonth();
-			String month = m.getMonth(monthID);
-			String nameOfStation=stations.get(code);
-
-
-			StringBuilder sb = new StringBuilder();
-			String cCode;
-			Scanner scan = new Scanner(code);
-
-			scan.useDelimiter("(?<=.)");  
-			//	while (scan.hasNext()){ 
-			int countC=0;
-			while (countC<2){
-				countC=countC+1;
-				String letter = scan.next();
-				//System.out.println("character: [" + letter+ "]");  
-				sb.append(letter);
-			}
-			cCode = sb.toString();
-			String nameOfCountry=countries.get(cCode);
-			//System.out.println("cCode="+cCode);
-
-			double maXT=maxTemp/10.0;
-
-			System.out.printf("The highest temp recorded was %.1f ",maXT);
-			System.out.printf(" +/- 0.1 C, recored on %s of %d ", month, year);
-			System.out.printf("\n");
-			System.out.println("by"+ nameOfStation + " in "+nameOfCountry);
-			System.out.printf("\n");
-			// Fining the lowest mean
-
-			ArrayList<Double> meansArray = new ArrayList<Double>();
-
-			//For each line of dataTMAX
-			for (Readings item: dataTMAX){
-				int counterDay=0;
-				double mean=0;
-				double sum=0;
-				//extract the data string
-				String line=item.getData();
-				//put into scanner
-				Scanner scanner = new Scanner(line);
-				// new array list to hold the numbers for line
-				ArrayList<Integer> numbers = new ArrayList<Integer>();
-
-				while (scanner.hasNextInt()) {
-					numbers.add(scanner.nextInt());
-				}
-				//Find the mean
-				for (Integer number : numbers) {
-					if (number !=-9999){
-						sum=sum+number;
-						counterDay=counterDay+1;
+			//Find the population which was surveyed for XYZ
+			double sumOfPopulationXYZ = 0;
+			for (int i=0; i<ab.size(); i++){
+				String code=ab.get(i).getCode();
+				for (Pop p: populations){
+					if (p.getCode().equals(code)){
+						sumOfPopulationXYZ=sumOfPopulationXYZ+p.getPopulation();
 					}
-					mean=sum/counterDay;
-
 				}
-				meansArray.add(mean);	
-			}
-			//	System.out.println(meansArray);
-			//	System.out.println(meansArray.size());
+			}							
+			occA=sumA/sumOfPopulationAB;
+			occB=sumB/sumOfPopulationAB;
+			occX=sumX/sumOfPopulationXYZ;
+			occY=sumY/sumOfPopulationXYZ;
+			 occZ=sumZ/sumOfPopulationXYZ;
+			System.out.printf("Occurrence of A per capita %.7f%n",occA);
+			System.out.printf("Occurrence of B per capita %.7f%n",occB);
+			System.out.printf("Occurrence of X per capita %.7f%n",occX);
+			System.out.printf("Occurrence of Y per capita %.7f%n",occY);
+			System.out.printf("Occurrence of Z per capita %.7f%n",occZ);
 
-			//Get the stations Array:
-			ArrayList<String> stationCode = new ArrayList<String>();
-
-			//Scan first two letters of each station to create station-code array
-			for (Readings item : dataTMAX){
-				String code2 = item.getCode();
-				StringBuilder sbCO = new StringBuilder();
-				Scanner scanCO = new Scanner(code2);
-				scanCO.useDelimiter("(?<=.)");
-
-				int countletter=0;
-				while (countletter<2){
-					countletter=countletter+1;
-					String letter = scanCO.next();
-					sbCO.append(letter);
-				}
-				cCode = sbCO.toString();
-				stationCode.add(cCode);
-			}
-
-
-			//System.out.println(stationCode);
-
-			//Now create a new array of unique countries:
-			Set<String> rightCounties = new LinkedHashSet<String>();
-			for(String item : stationCode){
-				//For each recored animal get their code
-				//check if the code already been put
-				rightCounties.add(item);
-
-			}
-
-
-			//System.out.println(meansArray);
-			//System.out.println(stationCode);
-
-			//Combine the Country(code) - Means array into one to loop over the 
-			// rightCounties (5 countries) to find the average for each country ..
-			ArrayList<Means> countryMeans= new ArrayList<Means>();
-
-			for (int i=0; i<meansArray.size();i++){
-				String codeMean=stationCode.get(i);
-				double meanMean=meansArray.get(i);
-				countryMeans.add(new Means(codeMean, meanMean));
-			}
-
-			//	System.out.println(countryMeans);
-			//Array to hold country code and THE final mean
-			ArrayList<Means> finalMeans= new ArrayList<Means>();
-			//looping over to compare the 5 countries
-
-			Object[] rightArray = rightCounties.toArray();
-
+			//Now create two arrays sumAB and sumXYZ for total number of diseases per region
+			ArrayList<Pop> sumAB = new ArrayList<Pop>();
+			ArrayList<Pop> sumXYZ = new ArrayList<Pop>();
 			
-			for(int i=0; i < rightArray.length ; i++){
-				double sum=0;
-				double counter=0;
-				double mean=0;
-				String name=null;
-				for (Means item: countryMeans){
-					if(item.getCode().equals(rightArray[i])){
-						name=item.getCode();
-						sum=sum+item.getMean();
-						counter=counter+1;
-					}
-				}
-				mean=sum/counter;
-				finalMeans.add(new Means(name, mean));
+			for (AB item : ab){
+				String code =item.getCode();
+				int totalAB=item.getA()+item.getB();
+				sumAB.add(new Pop(code,totalAB));
 			}
-			//		System.out.println(finalMeans);
+			System.out.println("size of AB population :"+sumAB.size());
+			
+			for (XYZ item : xyz){
+				String code =item.getCode();
+				int totalXYZ=item.getX()+item.getY()+item.getZ();
+				sumXYZ.add(new Pop(code,totalXYZ));
+			}
+			System.out.println("size of XYZ population :"+sumXYZ.size());
+			System.out.println("Hence compare those two disease group separately");
 
-
-
+			//Now create two arrays capAB and capXYZ for number of total number of
+			// Diseases per capita in the region
+			ArrayList<Cap> capAB = new ArrayList<Cap>();
+			ArrayList<Cap> capXYZ = new ArrayList<Cap>();
+			
+			//Taking care that AB, and XYZ size < populations
+			// Divide by population for each region
+			for (Pop item : sumAB){
+				double capita=0;
+				String code =item.getCode();
+				double number=item.getPopulation();
+				for (Pop pop: populations){
+					String popCode=pop.getCode();
+					if (code.equals(popCode)){
+						capita = number/pop.getPopulation();
+					    
+					}
+				}				
+				
+					capAB.add(new Cap(code,capita));
+			}
+			//System.out.println("size of AB cap population :"+capAB.size());
+			//System.out.println("size of AB cap population :"+capAB);
+			//Same for XYZ
+			for (Pop item : sumXYZ){
+				double capita=0;
+				String code =item.getCode();
+				double number=item.getPopulation();
+				for (Pop pop: populations){
+					String popCode=pop.getCode();
+					if (code.equals(popCode)){
+						capita = number/pop.getPopulation();
+					    
+					}
+				}				
+				
+					capXYZ.add(new Cap(code,capita));
+			}
+			
+		//	System.out.println("size of XYZ cap population :"+capXYZ);
+		//	System.out.println("size of XYZ cap population :"+capXYZ.size());
+			
 			//Using a custom comparator to sort in acceding order the collection 
 			// object by  
-			Collections.sort(finalMeans, new Comparator<Means>() {
-				public int compare(Means c1, Means c2) {
-					return Double.compare(c1.getMean(), c2.getMean());
+			Collections.sort(capXYZ, new Comparator<Cap>() {
+				@Override
+				public int compare(Cap c1, Cap c2) {
+					return Double.compare(c1.getPopulation(), c2.getPopulation());
 				}
 			});
-
-			String coldCode=finalMeans.get(0).getCode();
-
-			StringBuilder sb3 = new StringBuilder();
-			String cCode3;
-			Scanner scan3 = new Scanner(coldCode);
-
-			scan3.useDelimiter("(?<=.)");  
-			//	while (scan.hasNext()){ 
-			int countC3=0;
-			while (countC3<2){
-				countC3=countC3+1;
-				String letter = scan3.next();
-				//System.out.println("character: [" + letter+ "]");  
-				sb3.append(letter);
-			}
-			cCode3 = sb3.toString();
-
-			String nameOfCountry3=countries.get(cCode3);
-
-			System.out.printf("The coldest country is %s ", nameOfCountry3);
-			System.out.printf("with the mean temperature of %.1f",finalMeans.get(0).getMean()/10);
-			System.out.printf (" +/- 0.1 C");
-			System.out.printf("\n");
-			System.out.printf("\n");
-
-			Set<Integer> rightYears = new LinkedHashSet<Integer>();
-			for(Readings item : dataTMAX){
-				//For each recored animal get their code
-				//check if the code already been put
-				rightYears.add(item.getYear());
-			}
-
-			//System.out.println(rightYears);
-			//System.out.println(rightYears.size()); //12
-			Object[] years = rightYears.toArray();
-
-			//Now we will copy the array countryMeans with years and put into new arrray 
-			ArrayList<MeansYears> countryMeansYears = new ArrayList<MeansYears>();
-
-			//Get array of years
-			ArrayList<Integer> yearsY = m.getYears(urlReadings);
-
-
-			//Get the new year-mean-country array
-			for (int i=0; i<countryMeans.size();i++){
-				String codeY=countryMeans.get(i).getCode();
-				double meanY=countryMeans.get(i).getMean();
-				int yearY=yearsY.get(i);
-
-				countryMeansYears.add(new MeansYears(codeY, meanY, yearY));
-			}
-
-			//Array to store 12 lowest means, country codes and correspodning years
-			ArrayList<MeansYears> finalMeansYears = new ArrayList<MeansYears>();
-			//For each 1 of 12 years (12 iterations)
-			// take the year and take the item from countryMeansYears
-			// If it has the right year:
-			//Compare with the lowest
-			// if it is lower -> new lowest
-			// do for all 699 items
-			// Recored the year, country and the lowest mean
-			//move on to next year
-			for(int y=0; y < rightYears.size() ; y++){
-				String CC=null;
-				double lowestMean=Double.MAX_VALUE;
-				double meanY=0;
-				int year1=0;
-				int year2=(int) years[y];
-				for (MeansYears item : countryMeansYears){
-					meanY=item.getMean();
-					year1=item.getYear();
-					if(year1==(year2)){
-						if (meanY < lowestMean){
-							lowestMean=meanY;
-							CC=item.getCode();
-						}
-						//	System.out.println(lowestMean);
-						//	System.out.println(CC);
-						//	System.out.println(year1);
-
-					}
+			//Same of AB
+			Collections.sort(capAB, new Comparator<Cap>() {
+				@Override
+				public int compare(Cap c1, Cap c2) {
+					return Double.compare(c1.getPopulation(), c2.getPopulation());
 				}
-				finalMeansYears.add(new MeansYears (CC, lowestMean, year2));
+			});
+			
+			//The highest and lowest and last and first, respectively
+			String lowestXYZCode=capXYZ.get(0).getCode();
+			String highestXYZCode=capXYZ.get(capXYZ.size()-1).getCode();
+			String lowestABCode=capAB.get(0).getCode();
+			String highestABCode=capAB.get(capAB.size()-1).getCode();
+			
+			//Again, using the magic of array Lists to get the desired information! 
+			for (Reg item : regions){
+				String code=item.getCode();
+				if (code.equals(lowestXYZCode)){
+					System.out.println("The lowest region with XYZ is "+item.getName().replace(",", "").replace("[", "").replace("]", ""));
+				}
+				if (code.equals(highestXYZCode)){
+					System.out.println("The highest region with XYZ is "+item.getName().replace(",", "").replace("[", "").replace("]", ""));
+				}
+				if (code.equals(lowestABCode)){
+					System.out.println("The lowest region with AB is "+item.getName().replace(",", "").replace("[", "").replace("]", ""));
+				}
+				if (code.equals(highestABCode)){
+					System.out.println("The highest region with AB is "+item.getName().replace(",", "").replace("[", "").replace("]", ""));
+				}
 			}
+			
+			ArrayList<Result> result =m.poissonALLA(ab, populations, regions);
+			System.out.println(result.toString().replace(",", "").replace("[", "").replace("]", ""));
+			
+			meanA=m.meanA(ab);
+			meanB=m.meanB(ab);
+			stdDA=m.stdA(ab, meanA);
+			stdDB=m.stdB(ab, meanB);
 
-			System.out.println("Lowest Mean Max T:\n");
-			System.out.println(finalMeansYears);
-
-	
-
-
+			double corrAB = m.correlationAB(ab, meanA, meanB,stdDA, stdDB);
+			System.out.println(corrAB);
+			
+			ArrayList<AB> aboveMean=m.filter(ab, meanA);
+			System.out.println(aboveMean.size());
+			
+			ArrayList<String> selected = m.select(ab, 5, regions);
+			System.out.println(selected.toString().replace(",", "").replace("[", "").replace("]", ""));
 		} 
 
 		catch (IOException e){System.out.println("An error has occurred: "+e.getMessage());}

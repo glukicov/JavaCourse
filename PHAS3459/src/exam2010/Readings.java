@@ -1,4 +1,4 @@
-package exam2011;
+package exam2010;
 
 /** This class stores the READINGS.txt data in appropriate format to be used by a collection objects in the Main class
  * 

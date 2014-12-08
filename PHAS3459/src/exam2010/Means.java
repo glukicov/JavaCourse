@@ -1,4 +1,4 @@
-package exam2011;
+package exam2010;
 
 public class Means{
 
