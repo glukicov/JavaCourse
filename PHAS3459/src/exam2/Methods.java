@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * 
  * @author Gleb
- * This class implements and extends on methods defined in SelectMethods interface to be used in Main
+ * This class implements and extends on methods defined in the Interface, to be used in Main class
  */
 public class Methods implements Interface {
 
