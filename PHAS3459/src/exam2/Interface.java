@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Defining an interface to be used by the Main classes (to link non-static methods from the Methods class)
  *
  * 
- *    
+ *  @version 1.3 (10/12/2014)
  */
 public interface Interface {
 

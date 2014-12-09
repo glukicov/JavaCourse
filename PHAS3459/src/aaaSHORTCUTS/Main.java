@@ -14,14 +14,17 @@ import java.util.ArrayList;
  *
  *
  * @author Gleb
- * @version 1.3 (17/11/14)
- * @
+ * @version 1.3 (10/12/2014)
+ * 
  * */
 public class Main {
 
 	//Storing URL variable
-	private static final String url ="http://www.hep.ucl.ac.uk/undergrad/3459/exam-data/exoplanets.txt";
+	private static final String url ="";
 
+	//Initialising variables (which have extended scope)
+	
+	
 	public static void main(String[] args) {
 
 		try {
@@ -33,10 +36,10 @@ public class Main {
 			//Storing the data in the array list collection
 			ArrayList<DataFormat> data = m.readData(url);
 			System.out.println("Data:");
-			System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
+		    System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
 			
 			/*
-			//Using collection Iterator to loop though all items 
+			//Using collection Iterator to loop though all items in the collection 
 			for(DataFormat item : planets){
 				if (item.getMethod().equals("Timing")){
 							arrayTiming.add(item);
@@ -46,7 +49,7 @@ public class Main {
 			
 /*
 			//Using a custom comparator to sort in acceding order the collection 
-			// object by  
+			// object - the first (0th elements) will have the smallest value
 			Collections.sort(arrayTiming, new Comparator<DataFormat>() {
 				@Override
 				public int compare(DataFormat c1, DataFormat c2) {

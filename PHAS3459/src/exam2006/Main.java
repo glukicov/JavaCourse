@@ -1,4 +1,4 @@
-package exam2;
+package exam2006;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,17 +14,14 @@ import java.util.ArrayList;
  *
  *
  * @author Gleb
- * @version 1.3 (10/12/2014)
- * 
+ * @version 1.3 (17/11/14)
+ * @
  * */
 public class Main {
 
 	//Storing URL variable
-	private static final String url ="";
-
-	//Initialising variables (which have extended scope)
-	
-	
+	private static final String url ="http://www.hep.ucl.ac.uk/undergrad/3459/exam_data/2006-07/final/hd_data.dat";
+	private static final String urlB="http://www.hep.ucl.ac.uk/undergrad/3459/exam_data/2006-07/final/hd_bgd.dat";
 	public static void main(String[] args) {
 
 		try {
@@ -35,11 +32,13 @@ public class Main {
 			
 			//Storing the data in the array list collection
 			ArrayList<DataFormat> data = m.readData(url);
-			System.out.println("Data:");
-		    System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
+//			System.out.println(data.toString().replace(",", "").replace("[", "").replace("]", ""));
+			
+			ArrayList<BackgroundFormat> background=m.readBackground(urlB, data);
+			System.out.println(background);
 			
 			/*
-			//Using collection Iterator to loop though all items in the collection 
+			//Using collection Iterator to loop though all items 
 			for(DataFormat item : planets){
 				if (item.getMethod().equals("Timing")){
 							arrayTiming.add(item);
@@ -49,7 +48,7 @@ public class Main {
 			
 /*
 			//Using a custom comparator to sort in acceding order the collection 
-			// object - the first (0th elements) will have the smallest value
+			// object by  
 			Collections.sort(arrayTiming, new Comparator<DataFormat>() {
 				@Override
 				public int compare(DataFormat c1, DataFormat c2) {

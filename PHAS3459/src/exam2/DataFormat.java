@@ -5,7 +5,7 @@ package exam2;
  * 
  * 
  * @author Gleb
- * @version 1.0 (17/11/14)
+ * @version 1.3 (10/12/2014)
  * */
 
 public class DataFormat {
