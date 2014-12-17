@@ -7,7 +7,7 @@ package module8;
 // * total number of prime numbers found
 //* 
 //* @author Gleb
-//* @version 1.3 (26/11/14)
+//* @version 1.3 (16/12/14)
 //* @
  */
 public class ThreadMain {
@@ -38,25 +38,13 @@ public class ThreadMain {
 		prime.interrupt();	
 
 
-
 		//Using an array property size to find the largest elements
 		// it works because we use a consecutive method to add elements to array
 		// so the last element is the largest!
-		//System.out.println("Integer.MAX_VALUE"+Integer.MAX_VALUE);
 
-		int checkedSize=PrimeNumberTask.integers.size();
-		System.out.println("checkedSize="+checkedSize);
-		int primeSize=PrimeNumberTask.primes.size();
-		System.out.println("primeSize="+primeSize);
-		int largestInteger =PrimeNumberTask.integers.get(checkedSize);
-		System.out.println("largestInteger="+largestInteger);
-		int largestPrime = PrimeNumberTask.primes.get(primeSize);
-		System.out.println("largestPrime="+largestPrime);
-
-		//Printing out the results 
-		System.out.println("The largest integer that was checked: "+largestInteger);
-		System.out.println("The largest prime number found: "+largestPrime);
-		System.out.println("The total number of primes found: "+primeSize);
+		System.out.println("Total number of prime numbers found: "+PrimeNumberTask.primes.size());
+		System.out.println("Largest prime number found: "+PrimeNumberTask.primes.get(PrimeNumberTask.primes.size()-1));
+		System.out.println("Total number of integers checked: "+PrimeNumberTask.integers.size());
 
 	}
 
